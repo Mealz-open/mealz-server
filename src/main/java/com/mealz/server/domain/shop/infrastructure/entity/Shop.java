@@ -2,9 +2,12 @@ package com.mealz.server.domain.shop.infrastructure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
+import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import com.mealz.server.global.persistence.BasePostgresEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,13 +36,16 @@ public class Shop extends BasePostgresEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(updatable = false, unique = true)
-  private UUID id;
+  private UUID shopId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
 
   @Column(nullable = false)
   private String shopName;
+
+  @Enumerated(EnumType.STRING)
+  private ShopCategory shopCategory;
 
   @Column(columnDefinition = "geography(Point, 4326)", nullable = false)
   private Point<G2D> geom;

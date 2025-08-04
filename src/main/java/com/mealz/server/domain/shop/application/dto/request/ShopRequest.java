@@ -1,5 +1,6 @@
 package com.mealz.server.domain.shop.application.dto.request;
 
+import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,8 @@ public class ShopRequest {
 
   @NotBlank
   private String shopName;
+
+  private ShopCategory shopCategory;
 
   private long latitude;
 

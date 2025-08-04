@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
     description = "매장 관련 API 제공"
 )
 @RequestMapping("/api/shop")
-public class ShopController implements ShopControllerDocs{
+public class ShopController implements ShopControllerDocs {
 
   private final ShopService shopService;
 
@@ -36,18 +36,18 @@ public class ShopController implements ShopControllerDocs{
   public ResponseEntity<Void> createShop(
       @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
       @Valid @RequestBody ShopRequest request
-  ){
+  ) {
     shopService.createShop(customOAuth2User.getMember(), request);
     return ResponseEntity.ok().build();
   }
 
   @Override
-  @GetMapping
+  @GetMapping("/{member-id}")
   @LogMonitoringInvocation
   public ResponseEntity<List<ShopResponse>> getMyShops(
-      @AuthenticationPrincipal CustomOAuth2User customOAuth2User
-  ){
-    return ResponseEntity.ok(shopService.getMyShops(customOAuth2User.getMember()));
+      @PathVariable(name = "member-id") UUID memberId
+  ) {
+    return ResponseEntity.ok(shopService.getMyShops(memberId));
   }
 
   @Override
