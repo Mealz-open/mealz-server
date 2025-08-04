@@ -3,6 +3,7 @@ package com.mealz.server.domain.mock.application.service;
 import static com.mealz.server.global.util.CommonUtil.nvl;
 
 import com.mealz.server.domain.member.core.constant.AccountStatus;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.core.constant.Role;
 import com.mealz.server.domain.member.core.constant.SocialPlatform;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
@@ -81,6 +82,9 @@ public class MockMemberFactory {
     AccountStatus status = requestOptional
         .map(LoginRequest::getAccountStatus)
         .orElse(AccountStatus.ACTIVE_ACCOUNT);
+    MemberType memberType = requestOptional
+        .map(LoginRequest::getMemberType)
+        .orElse(MemberType.BENEFICIARY);
     boolean firstLogin = requestOptional
         .map(LoginRequest::getIsFirstLogin)
         .orElseGet(() -> koFaker.random().nextBoolean());
@@ -96,6 +100,7 @@ public class MockMemberFactory {
         .phone(koFaker.phoneNumber().cellPhone())
         .profileUrl(koFaker.internet().image())
         .gender(koFaker.options().option("male", "female"))
+        .memberType(memberType)
         .accountStatus(status)
         .isFirstLogin(firstLogin)
         .lastLoginTime(LocalDateTime.now());

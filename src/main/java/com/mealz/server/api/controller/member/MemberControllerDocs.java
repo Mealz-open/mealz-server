@@ -1,6 +1,7 @@
 package com.mealz.server.api.controller.member;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.member.application.dto.request.MemberInfoRequest;
 import com.mealz.server.domain.member.application.dto.response.MemberInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public interface MemberControllerDocs {
               "username": "email@naver.com",
               "nickname": "재빠른 다람쥐",
               "name": "백지훈",
+              "memberType": "DONATOR",
               "birthDay": "0701",
               "birthYear": "2002",
               "phone": "010-1234-5678",
@@ -35,4 +37,35 @@ public interface MemberControllerDocs {
   )
   ResponseEntity<MemberInfoResponse> getMemberInfo(
       CustomOAuth2User customOAuth2User);
+
+  @Operation(
+      summary = "회원 정보 설정",
+      description = """
+          ### 요청 파라미터
+          - `nickname` (String, required): 3~10글자 사이의 닉네임
+          - `memberType` (MemberType, required): `MemberType` enum 값 입력
+          - `profileImage` (MultipartFile, optional): 프로필 이미지 파일
+          
+          ### 응답 데이터
+          - `없음`
+          
+          ### `MemberType
+          - `DONATOR`: 기부자
+          - `BENEFICIARY`: 수혜자
+          
+          ### 사용 방법
+          1. `multipart/form-data` 형태로 다음 필드들을 포함하여 요청을 전송합니다.
+          2. 서버에서 닉네임과 멤버 유형을 업데이트하고, 프로필 이미지를 업로드한 뒤 프로필 URL을 저장합니다.
+          3. 정상 처리 시 HTTP `200 OK`를 반환합니다
+          
+          ### 유의 사항
+          - `nickname`은 반드시 3자 이상 10자 이하이어야 하며, 누락 시 400 에러가 발생합니다.
+          - `memberType`은 `DONOR`, `RECIPIENT` `MemberType` enum에 정의된 값만 허용됩니다.
+          - `profileImage`는 선택 항목으로, 전송하지 않아도 요청이 정상 처리됩니다.
+          """
+  )
+  ResponseEntity<Void> setMemberInfo(
+      CustomOAuth2User customOAuth2User,
+      MemberInfoRequest request
+  );
 }

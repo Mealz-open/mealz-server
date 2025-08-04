@@ -48,7 +48,8 @@ public class ShopService {
   }
 
   @Transactional(readOnly = true)
-  public List<ShopResponse> getMyShops(Member member) {
+  public List<ShopResponse> getMyShops(UUID memberId) {
+    Member member = memberService.findMemberById(memberId);
     List<Shop> shops = shopRepository.findByMember(member);
     return shops.stream()
         .map(shopMapper::toShopResponse)
@@ -70,7 +71,7 @@ public class ShopService {
 
   private void validateOwnedShop(Member member, Shop shop) {
     if (!shop.getMember().equals(member)) {
-      log.error("가게 소유주가 아닙니다: 요청 가게: {}, 요청 회원: {}", shop.getId(), member.getId());
+      log.error("가게 소유주가 아닙니다: 요청 가게: {}, 요청 회원: {}", shop.getShopId(), member.getMemberId());
       throw new CustomException(ErrorCode.NOT_OWNED_SHOP);
     }
   }

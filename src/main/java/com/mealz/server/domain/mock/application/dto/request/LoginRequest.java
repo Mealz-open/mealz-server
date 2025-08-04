@@ -1,6 +1,7 @@
 package com.mealz.server.domain.mock.application.dto.request;
 
 import com.mealz.server.domain.member.core.constant.AccountStatus;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.core.constant.Role;
 import com.mealz.server.domain.member.core.constant.SocialPlatform;
 import jakarta.validation.constraints.Email;
@@ -23,6 +24,8 @@ public class LoginRequest {
   private Role role;
 
   private SocialPlatform socialPlatform;
+
+  private MemberType memberType;
 
   private AccountStatus accountStatus;
 

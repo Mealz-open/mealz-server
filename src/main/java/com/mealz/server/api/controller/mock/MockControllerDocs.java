@@ -16,7 +16,7 @@ public interface MockControllerDocs {
           ### 요청 파라미터
           - **role** (String): 회원 권한 [필수]
           - **socialPlatform** (String): 소셜 플랫폼 [필수]
-          - **memberType** (String): 의뢰인/대리자 (기본: 의뢰인)
+          - **memberType** (String): 기부자/수혜자 (기본: 수혜자)
           - **accountStatus** (String): 활성화/삭제 (기본: 활성화)
           - **isFirstLogin** (Boolean): 첫 로그인 여부
           

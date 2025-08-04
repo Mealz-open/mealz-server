@@ -7,8 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MemberType {
   DONATOR("기부자"),
-  BENEFICIARY("수혜자")
-  ;
+  BENEFICIARY("수혜자");
 
   private final String description;
 }

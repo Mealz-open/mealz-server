@@ -1,14 +1,19 @@
 package com.mealz.server.api.controller.member;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.member.application.dto.request.MemberInfoRequest;
 import com.mealz.server.domain.member.application.dto.response.MemberInfoResponse;
 import com.mealz.server.domain.member.application.service.MemberService;
 import com.mealz.server.global.annotation.LogMonitoringInvocation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +34,15 @@ public class MemberController implements MemberControllerDocs {
   public ResponseEntity<MemberInfoResponse> getMemberInfo(
       @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
     return ResponseEntity.ok().body(memberService.getMemberInfo(customOAuth2User.getMember()));
+  }
+
+  @Override
+  @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @LogMonitoringInvocation
+  public ResponseEntity<Void> setMemberInfo(
+      @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+      @Valid @ModelAttribute MemberInfoRequest request) {
+    memberService.setMemberInfo(customOAuth2User.getMember(), request);
+    return ResponseEntity.ok().build();
   }
 }

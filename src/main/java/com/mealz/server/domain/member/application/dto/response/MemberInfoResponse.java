@@ -1,5 +1,6 @@
 package com.mealz.server.domain.member.application.dto.response;
 
+import com.mealz.server.domain.member.core.constant.MemberType;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,9 @@ public class MemberInfoResponse {
 
   // 이름
   private String name;
+
+  // 기부자/수혜자
+  private MemberType memberType;
 
   // 생일
   private String birthDay;

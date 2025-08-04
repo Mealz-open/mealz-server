@@ -9,8 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ShopSortField implements SortField {
-  CREATED_DATE("createdDate")
-  ;
+  CREATED_DATE("createdDate");
 
   private final String property;
 

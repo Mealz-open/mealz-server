@@ -48,13 +48,13 @@ public class MockService {
     Member member = memberRepository.findByUsername(request.getUsername())
         .orElseGet(() -> memberRepository.saveAndFlush(mockMemberFactory.generate(request)));
 
-    String accessToken = tokenProvider.createAccessToken(member.getId().toString(), member.getUsername(), member.getRole().name());
+    String accessToken = tokenProvider.createAccessToken(member.getMemberId().toString(), member.getUsername(), member.getRole().name());
 
     log.debug("테스트 로그인 성공: 엑세스 토큰 및 리프레시 토큰 생성");
     log.debug("테스트 accessToken = {}", accessToken);
 
     return LoginResponse.builder()
-        .memberId(member.getId())
+        .memberId(member.getMemberId())
         .accessToken(accessToken)
         .build();
   }
