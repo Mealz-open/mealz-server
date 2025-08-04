@@ -1,7 +1,9 @@
 package com.mealz.server.domain.member.application.service;
 
+import com.mealz.server.domain.member.application.dto.request.MemberInfoRequest;
 import com.mealz.server.domain.member.application.dto.response.MemberInfoResponse;
 import com.mealz.server.domain.member.application.mapper.MemberMapper;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.member.infrastructure.repository.MemberRepository;
 import com.mealz.server.global.exception.CustomException;
@@ -31,6 +33,15 @@ public class MemberService {
   }
 
   /**
+   * 회원 정보 설정
+   * @param request
+   */
+  @Transactional
+  public void setMemberInfo(Member member, MemberInfoRequest request) {
+    member.setMemberType(request.getMemberType());
+  }
+
+  /**
    * memberId에 해당하는 회원 반환
    *
    * @param memberId 회원 PK
@@ -41,5 +52,9 @@ public class MemberService {
           log.error("요청한 PK값에 해당하는 회원을 찾을 수 없습니다. 요청 PK: {}", memberId);
           return new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         });
+  }
+
+  public boolean isValidMemberType(Member member, MemberType memberType) {
+    return member.getMemberType().equals(memberType);
   }
 }

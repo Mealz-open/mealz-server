@@ -75,7 +75,7 @@ public class CustomOAuth2User implements OAuth2User, UserPrincipal, Principal {
   }
 
   public String getMemberId() {
-    return member.getMemberId().toString(); // 회원의 memberId (UUID)를 string 으로 반환
+    return member.getId().toString(); // 회원의 memberId (UUID)를 string 으로 반환
   }
 
   public void confirmExpire(long expiresAtMillis) {
