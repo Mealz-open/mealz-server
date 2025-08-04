@@ -90,27 +90,27 @@ public class CommonUtil {
         .orElseThrow(() -> new CustomException(ErrorCode.INVALID_REQUEST));
   }
 
-//  /**
-//   * SortField를 구현한 enumClass의 값 중 value와 매칭된 상수 반환
-//   *
-//   * @param <E>       enum 타입 (Enum<E>이면서 SortField 구현)
-//   * @param enumClass SortField를 구현한 해당 enum 클래스
-//   * @param value     문자열
-//   * @return 매칭된 enum 상수
-//   */
-//  public static <E extends Enum<E> & SortField> E stringToSortField(Class<E> enumClass, String value) {
-//    if (nvl(value, "").isEmpty()) {
-//      throw new CustomException(ErrorCode.INVALID_SORT_FIELD);
-//    }
-//
-//    return Arrays.stream(enumClass.getEnumConstants())
-//        .filter(e ->
-//            e.name().equalsIgnoreCase(value) ||
-//            e.getProperty().equals(value)
-//        )
-//        .findFirst()
-//        .orElseThrow(() -> new CustomException(ErrorCode.INVALID_SORT_FIELD));
-//  }
+  /**
+   * SortField를 구현한 enumClass의 값 중 value와 매칭된 상수 반환
+   *
+   * @param <E>       enum 타입 (Enum<E>이면서 SortField 구현)
+   * @param enumClass SortField를 구현한 해당 enum 클래스
+   * @param value     문자열
+   * @return 매칭된 enum 상수
+   */
+  public static <E extends Enum<E> & SortField> E stringToSortField(Class<E> enumClass, String value) {
+    if (nvl(value, "").isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_SORT_FIELD);
+    }
+
+    return Arrays.stream(enumClass.getEnumConstants())
+        .filter(e ->
+            e.name().equalsIgnoreCase(value) ||
+            e.getProperty().equals(value)
+        )
+        .findFirst()
+        .orElseThrow(() -> new CustomException(ErrorCode.INVALID_SORT_FIELD));
+  }
 
   /**
    * 특수문자 제거
