@@ -3,6 +3,7 @@ package com.mealz.server.domain.member.infrastructure.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mealz.server.domain.member.core.constant.AccountStatus;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.core.constant.Role;
 import com.mealz.server.domain.member.core.constant.SocialPlatform;
 import com.mealz.server.global.persistence.BasePostgresEntity;
@@ -76,6 +77,10 @@ public class Member extends BasePostgresEntity {
   // 권한 (유저, 관리자)
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  // 기부자/수혜자
+  @Enumerated(EnumType.STRING)
+  private MemberType memberType;
 
   // 계정 상태 (활성, 삭제)
   @Enumerated(EnumType.STRING)

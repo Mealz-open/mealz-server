@@ -1,9 +1,14 @@
 package com.mealz.server.domain.member.application.service;
 
+import com.mealz.server.domain.member.application.dto.request.MemberInfoRequest;
 import com.mealz.server.domain.member.application.dto.response.MemberInfoResponse;
 import com.mealz.server.domain.member.application.mapper.MemberMapper;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.member.infrastructure.repository.MemberRepository;
+import com.mealz.server.domain.storage.core.constant.UploadType;
+import com.mealz.server.domain.storage.core.service.StorageService;
+import com.mealz.server.domain.storage.infrastructure.util.FileUtil;
 import com.mealz.server.global.exception.CustomException;
 import com.mealz.server.global.exception.ErrorCode;
 import java.util.UUID;
@@ -19,6 +24,7 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
   private final MemberMapper memberMapper;
+  private final StorageService storageService;
 
   /**
    * JWT 기반 회원정보 조회
@@ -28,6 +34,21 @@ public class MemberService {
   @Transactional(readOnly = true)
   public MemberInfoResponse getMemberInfo(Member member) {
     return memberMapper.toMemberInfoResponse(member);
+  }
+
+  /**
+   * 회원 정보 설정
+   *
+   * @param request
+   */
+  @Transactional
+  public void setMemberInfo(Member member, MemberInfoRequest request) {
+    member.setNickname(request.getNickname());
+    member.setMemberType(request.getMemberType());
+    if (!FileUtil.isNullOrEmpty(request.getProfileImage())) {
+      member.setProfileUrl(storageService.uploadFile(request.getProfileImage(), UploadType.MEMBER));
+    }
+    memberRepository.save(member);
   }
 
   /**
@@ -41,5 +62,9 @@ public class MemberService {
           log.error("요청한 PK값에 해당하는 회원을 찾을 수 없습니다. 요청 PK: {}", memberId);
           return new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         });
+  }
+
+  public boolean isValidMemberType(Member member, MemberType memberType) {
+    return member.getMemberType().equals(memberType);
   }
 }

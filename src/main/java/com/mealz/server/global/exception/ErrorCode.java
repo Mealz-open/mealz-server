@@ -62,6 +62,12 @@ public enum ErrorCode {
 
   UNFOLLOW_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "팔로우하지 않은 회원에 대해 언팔로우할 수 없습니다."),
 
+  // SHOP
+
+  SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "가게를 찾을 수 없습니다."),
+
+  NOT_OWNED_SHOP(HttpStatus.BAD_REQUEST, "가게 소유주가 아닙니다."),
+
   // CONCERT
 
   CONCERT_NOT_FOUND(HttpStatus.BAD_REQUEST, "콘서트를 찾을 수 없습니다."),

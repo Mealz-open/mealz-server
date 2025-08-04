@@ -70,6 +70,10 @@ dependencies {
     // Postgres
     runtimeOnly 'org.postgresql:postgresql'
 
+    // PostGIS
+    implementation 'org.hibernate:hibernate-spatial:6.6.4.Final'
+    implementation 'org.geolatte:geolatte-geom:1.9.0'
+
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
