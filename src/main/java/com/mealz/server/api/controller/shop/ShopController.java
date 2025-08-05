@@ -10,12 +10,13 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,11 +32,11 @@ public class ShopController implements ShopControllerDocs {
   private final ShopService shopService;
 
   @Override
-  @PostMapping
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @LogMonitoringInvocation
   public ResponseEntity<Void> createShop(
       @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-      @Valid @RequestBody ShopRequest request
+      @Valid @ModelAttribute ShopRequest request
   ) {
     shopService.createShop(customOAuth2User.getMember(), request);
     return ResponseEntity.ok().build();
