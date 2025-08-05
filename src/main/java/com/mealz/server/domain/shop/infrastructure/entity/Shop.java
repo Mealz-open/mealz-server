@@ -47,6 +47,8 @@ public class Shop extends BasePostgresEntity {
   @Enumerated(EnumType.STRING)
   private ShopCategory shopCategory;
 
+  private String shopImageUrl;
+
   @Column(columnDefinition = "geography(Point, 4326)", nullable = false)
   private Point<G2D> geom;
 

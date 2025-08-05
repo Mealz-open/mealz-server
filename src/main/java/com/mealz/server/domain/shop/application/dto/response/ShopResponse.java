@@ -12,6 +12,7 @@ public record ShopResponse(
     String profileUrl,
     String shopName,
     ShopCategory shopCategory,
+    String shopImageUrl,
     Double longitude, // 경도
     Double latitude, // 위도
     String siDo,
@@ -27,6 +28,7 @@ public record ShopResponse(
         .profileUrl(shop.getMember().getProfileUrl())
         .shopName(shop.getShopName())
         .shopCategory(shop.getShopCategory())
+        .shopImageUrl(shop.getShopImageUrl())
         .longitude(shop.getGeom().getPosition().getLon())
         .latitude(shop.getGeom().getPosition().getLat())
         .siDo(shop.getSiDo())

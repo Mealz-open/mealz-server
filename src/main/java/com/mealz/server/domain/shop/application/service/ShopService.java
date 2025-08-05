@@ -7,6 +7,9 @@ import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import com.mealz.server.domain.shop.infrastructure.entity.Shop;
 import com.mealz.server.domain.shop.infrastructure.repository.ShopRepository;
+import com.mealz.server.domain.storage.core.constant.UploadType;
+import com.mealz.server.domain.storage.core.service.StorageService;
+import com.mealz.server.domain.storage.infrastructure.util.FileUtil;
 import com.mealz.server.global.exception.CustomException;
 import com.mealz.server.global.exception.ErrorCode;
 import com.mealz.server.global.util.PostGisUtil;
@@ -25,15 +28,21 @@ public class ShopService {
 
   private final ShopRepository shopRepository;
   private final MemberService memberService;
+  private final StorageService storageService;
 
   @Transactional
   public void createShop(Member member, ShopRequest request) {
     memberService.validateMemberType(member, MemberType.DONATOR);
+    String shopProfileUrl = null;
+    if (!FileUtil.isNullOrEmpty(request.getShopImage())) {
+      shopProfileUrl = storageService.uploadFile(request.getShopImage(), UploadType.SHOP);
+    }
 
     Shop shop = Shop.builder()
         .member(member)
         .shopName(request.getShopName())
         .shopCategory(request.getShopCategory())
+        .shopImageUrl(shopProfileUrl)
         .geom(PostGisUtil.makePoint(request.getLongitude(), request.getLatitude()))
         .siDo(request.getSiDo())
         .siGunGu(request.getSiGunGu())

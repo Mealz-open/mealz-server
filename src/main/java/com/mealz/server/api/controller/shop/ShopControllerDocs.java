@@ -16,6 +16,7 @@ public interface ShopControllerDocs {
           ### 요청 파라미터
           - `shopName` (String, required): 매장 이름
           - `shopCategory` (String, required): 매장 카테고리
+          - `shopImage` (Multipartfile, optional): 매장 프로필사진
           - `latitude` (long, required): 위도 (EPSG:4326)
           - `longitude` (long, required): 경도 (EPSG:4326)
           - `siDo` (String, required): 시/도
@@ -41,10 +42,10 @@ public interface ShopControllerDocs {
           
           ### 사용 방법
           1. DONATOR 타입 회원으로 로그인 후, Authorization 헤더에 엑세스 토큰을 포함합니다.  
-          2. JSON 형태로 요청 본문을 구성하여 POST `/api/shop` 로 전송합니다.
+          2. FormData 형태로 요청 본문을 구성하여 POST `/api/shop` 로 전송합니다.
           
           ### 유의 사항
-          - 모든 필드(`shopName`, `shopCategory`, `latitude`, `longitude`, `siDo`, `siGunGu`, `eupMyoenDong`)는 필수입니다.
+          - 필드(`shopName`, `shopCategory`, `latitude`, `longitude`, `siDo`, `siGunGu`, `eupMyoenDong`)는 필수입니다.
           - `ri`는 필요 없는 경우 빈 문자열 또는 생략 가능합니다.
           - DONATOR 타입 회원만 매장 등록이 가능합니다.
           """
@@ -67,6 +68,7 @@ public interface ShopControllerDocs {
             - `profileUrl` (String): 매장주 프로필 이미지 URL  
             - `shopName` (String): 매장 이름  
             - `shopCategory` (String): 매장 카테고리  
+            - `shopImageUrl` (String): 매장 대표 사진  
             - `latitude` (Double): 위도  
             - `longitude` (Double): 경도  
             - `siDo` (String): 시/도  
@@ -99,6 +101,7 @@ public interface ShopControllerDocs {
             - `profileUrl` (String): 매장주 프로필 이미지 URL  
             - `shopName` (String): 매장 이름  
             - `shopCategory` (String): 매장 카테고리
+            - `shopImageUrl` (String): 매장 대표 사진
             - `latitude` (Double): 위도  
             - `longitude` (Double): 경도  
             - `siDo` (String): 시/도  

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,6 +20,8 @@ public class ShopRequest {
   private String shopName;
 
   private ShopCategory shopCategory;
+
+  private MultipartFile shopImage;
 
   private double longitude; // 경도
 
