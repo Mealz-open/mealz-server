@@ -3,6 +3,7 @@ package com.mealz.server.domain.shop.application.dto.request;
 import com.mealz.server.domain.shop.core.constant.ShopSortField;
 import com.mealz.server.global.util.PageableConstants;
 import com.mealz.server.global.util.PageableUtil;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class ShopFilteredRequest {
 
   private double latitude;
 
+  @Min(value = 0, message = "반경 값은 양수만 입력 가능합니다")
   private double radiusInMeters;
 
   private int pageNumber;

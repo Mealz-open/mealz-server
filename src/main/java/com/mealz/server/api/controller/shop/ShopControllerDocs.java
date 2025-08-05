@@ -107,7 +107,7 @@ public interface ShopControllerDocs {
         - 지정된 반경 내의 매장을 거리 또는 생성일 기준으로 정렬하여 페이징된 형태로 반환합니다.  
         
         ### 유의 사항
-        - `radiusInMeters`는 양수 정수만 허용됩니다.    
+        - `radiusInMeters`는 양수만 허용됩니다.    
         - 페이지 번호(`pageNumber`)가 1 미만일 경우 자동으로 1로 처리됩니다.  
         """
   )
