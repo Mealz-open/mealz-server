@@ -3,10 +3,12 @@ package com.mealz.server.domain.shop.application.service;
 import com.mealz.server.domain.member.application.service.MemberService;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
+import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import com.mealz.server.domain.shop.infrastructure.entity.Shop;
 import com.mealz.server.domain.shop.infrastructure.repository.ShopRepository;
+import com.mealz.server.domain.shop.infrastructure.repository.ShopRepositoryCustom;
 import com.mealz.server.domain.storage.core.constant.UploadType;
 import com.mealz.server.domain.storage.core.service.StorageService;
 import com.mealz.server.domain.storage.infrastructure.util.FileUtil;
@@ -18,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShopService {
 
   private final ShopRepository shopRepository;
+  private final ShopRepositoryCustom shopRepositoryCustom;
   private final MemberService memberService;
   private final StorageService storageService;
 
@@ -54,6 +58,17 @@ public class ShopService {
         .closeTime(request.getCloseTime())
         .build();
     shopRepository.save(shop);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<ShopResponse> filteredShop(ShopFilteredRequest request) {
+    Page<Shop> shops = shopRepositoryCustom.filteredShopByDistance(
+        request.getLongitude(),
+        request.getLatitude(),
+        request.getRadiusInMeters(),
+        request.toPageable()
+    );
+    return shops.map(ShopResponse::from);
   }
 
   @Transactional(readOnly = true)
