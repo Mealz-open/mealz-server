@@ -1,11 +1,13 @@
 package com.mealz.server.api.controller.shop;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 public interface ShopControllerDocs {
@@ -58,6 +60,59 @@ public interface ShopControllerDocs {
   ResponseEntity<Void> createShop(
       CustomOAuth2User customOAuth2User,
       ShopRequest request
+  );
+
+  @Operation(
+      summary = "매장 필터링 조회",
+      description = """
+        ### 요청 파라미터
+        - `longitude` (double, required): 기준이 되는 경도 값
+        - `latitude` (double, required): 기준이 되는 위도 값
+        - `radiusInMeters` (double, required): 검색 반경(미터 단위)
+        - `pageNumber` (int, optional): 조회할 페이지 번호 (1부터 시작, 기본값: 1)
+        - `pageSize` (int, optional): 한 페이지당 결과 수 (기본값: 설정된 기본 페이지 크기)
+        - `sortField` (ShopSortField, optional): 정렬 기준  
+          - `CREATED_DATE`: 생성일 순  
+          - `NEAREST`: 거리 순  
+          (기본값: `CREATED_DATE`)
+        - `sortDirection` (Sort.Direction, optional): 정렬 방향 (`ASC`, `DESC`, 기본값: `DESC`)
+        
+        ### 응답 데이터
+        - `content` (List\\<ShopResponse\\>): 필터링된 매장 목록  
+          - `shopId` (UUID): 매장 식별자  
+          - `nickname` (String): 매장주 닉네임  
+          - `profileUrl` (String): 매장주 프로필 이미지 URL  
+          - `shopName` (String): 매장 이름  
+          - `shopCategory` (ShopCategory): 매장 카테고리  
+          - `shopImageUrl` (String): 매장 대표 이미지 URL  
+          - `shopDescription` (String): 매장 설명  
+          - `longitude` (Double): 매장 경도  
+          - `latitude` (Double): 매장 위도  
+          - `siDo` (String): 시·도  
+          - `siGunGu` (String): 시·군·구  
+          - `eupMyoenDong` (String): 읍·면·동  
+          - `ri` (String): 리  
+          - `shopPhoneNumber` (String): 매장 연락처  
+          - `openTime` (String): 오픈 시각 (HH:mm, Asia/Seoul)  
+          - `closeTime` (String): 마감 시각 (HH:mm, Asia/Seoul)  
+        - `pageable`: 요청된 페이지 정보  
+        - `totalElements` (long): 전체 매장 수  
+        - `totalPages` (int): 전체 페이지 수  
+        - `number` (int): 현재 페이지 인덱스(0부터 시작)  
+        - `size` (int): 한 페이지당 요소 수  
+        - `first` (boolean): 첫 페이지 여부  
+        - `last` (boolean): 마지막 페이지 여부
+        
+        ### 사용 방법
+        - 지정된 반경 내의 매장을 거리 또는 생성일 기준으로 정렬하여 페이징된 형태로 반환합니다.  
+        
+        ### 유의 사항
+        - `radiusInMeters`는 양수 정수만 허용됩니다.    
+        - 페이지 번호(`pageNumber`)가 1 미만일 경우 자동으로 1로 처리됩니다.  
+        """
+  )
+  ResponseEntity<Page<ShopResponse>> filteredShop(
+      ShopFilteredRequest request
   );
 
   @Operation(

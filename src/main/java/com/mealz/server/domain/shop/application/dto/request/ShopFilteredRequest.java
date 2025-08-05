@@ -1,21 +1,50 @@
 package com.mealz.server.domain.shop.application.dto.request;
 
 import com.mealz.server.domain.shop.core.constant.ShopSortField;
+import com.mealz.server.global.util.PageableConstants;
+import com.mealz.server.global.util.PageableUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class ShopFilteredRequest {
+
+  private double longitude;
+
+  private double latitude;
+
+  private double radiusInMeters;
+
+  private int pageNumber;
+
+  private int pageSize;
 
   private ShopSortField sortField;
 
   private Sort.Direction sortDirection;
+
+  public ShopFilteredRequest() {
+    this.pageNumber = 1;
+    this.pageSize = PageableConstants.DEFAULT_PAGE_SIZE;
+    this.sortField = ShopSortField.CREATED_DATE;
+    this.sortDirection = Direction.DESC;
+  }
+
+  public Pageable toPageable() {
+    return PageableUtil.createPageable(
+        pageNumber,
+        pageSize,
+        PageableConstants.DEFAULT_PAGE_SIZE,
+        sortField,
+        sortDirection
+    );
+  }
 }
