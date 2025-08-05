@@ -8,8 +8,8 @@ import org.geolatte.geom.crs.CoordinateReferenceSystems;
 @UtilityClass
 public class PostGisUtil {
 
-  public Point<G2D> makePoint(double lat, double lon) {
-    return new Point<>(new G2D(lat, lon), CoordinateReferenceSystems.WGS84);
+  public Point<G2D> makePoint(double longitude, double latitude) {
+    return new Point<>(new G2D(longitude, latitude), CoordinateReferenceSystems.WGS84);
   }
 
 }
