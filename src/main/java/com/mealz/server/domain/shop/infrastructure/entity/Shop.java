@@ -1,5 +1,6 @@
 package com.mealz.server.domain.shop.infrastructure.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.shop.core.constant.ShopCategory;
@@ -13,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,6 +51,8 @@ public class Shop extends BasePostgresEntity {
 
   private String shopImageUrl;
 
+  private String shopDescription;
+
   @Column(columnDefinition = "geography(Point, 4326)", nullable = false)
   private Point<G2D> geom;
 
@@ -62,4 +66,12 @@ public class Shop extends BasePostgresEntity {
   private String eupMyoenDong;
 
   private String ri;
+
+  private String shopPhoneNumber;
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+  private LocalTime openTime;
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+  private LocalTime closeTime;
 }

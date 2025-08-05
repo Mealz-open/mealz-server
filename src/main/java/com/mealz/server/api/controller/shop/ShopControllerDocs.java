@@ -16,13 +16,17 @@ public interface ShopControllerDocs {
           ### 요청 파라미터
           - `shopName` (String, required): 매장 이름
           - `shopCategory` (String, required): 매장 카테고리
-          - `shopImage` (Multipartfile, optional): 매장 프로필사진
-          - `latitude` (long, required): 위도 (EPSG:4326)
-          - `longitude` (long, required): 경도 (EPSG:4326)
+          - `shopImage` (MultipartFile, optional): 매장 프로필 사진
+          - `shopDescription` (String, optional): 매장 설명
+          - `latitude` (double, required): 위도 (EPSG:4326)
+          - `longitude` (double, required): 경도 (EPSG:4326)
           - `siDo` (String, required): 시/도
           - `siGunGu` (String, required): 시/군/구
           - `eupMyoenDong` (String, required): 읍/면/동
           - `ri` (String, optional): 리
+          - `shopPhoneNumber` (String, optional): 전화번호 (예: 02-1234-5678)
+          - `openTime` (String, optional): 오픈 시간 (HH:mm)
+          - `closeTime` (String, optional): 마감 시간 (HH:mm)
           
           ### `ShopCategory`
           KOREAN("한식")
@@ -41,12 +45,13 @@ public interface ShopControllerDocs {
           - HTTP 200 OK, Body 없음
           
           ### 사용 방법
-          1. DONATOR 타입 회원으로 로그인 후, Authorization 헤더에 엑세스 토큰을 포함합니다.  
-          2. FormData 형태로 요청 본문을 구성하여 POST `/api/shop` 로 전송합니다.
+          1. DONATOR 타입 회원으로 로그인 후, Authorization 헤더에 액세스 토큰을 포함합니다.
+          2. FormData 형태로 요청 본문을 구성하여 POST `/api/shop`로 전송합니다.
           
           ### 유의 사항
           - 필드(`shopName`, `shopCategory`, `latitude`, `longitude`, `siDo`, `siGunGu`, `eupMyoenDong`)는 필수입니다.
-          - `ri`는 필요 없는 경우 빈 문자열 또는 생략 가능합니다.
+          - `ri`, `shopImage`, `shopDescription`, `shopPhoneNumber`, `openTime`, `closeTime`은 필요 없는 경우 생략 가능합니다.
+          - `shopPhoneNumber`는 `\\d{2,3}-\\d{3,4}-\\d{4}` 형식이어야 합니다.
           - DONATOR 타입 회원만 매장 등록이 가능합니다.
           """
   )
@@ -62,22 +67,26 @@ public interface ShopControllerDocs {
           - `member-id` (UUID, path): 사용자 ID
           
           ### 응답 데이터
-          - `List<ShopResponse>` 형태의 JSON 배열  
-            - `id` (UUID): 매장 식별자  
-            - `nickname` (String): 매장주 닉네임  
-            - `profileUrl` (String): 매장주 프로필 이미지 URL  
-            - `shopName` (String): 매장 이름  
-            - `shopCategory` (String): 매장 카테고리  
-            - `shopImageUrl` (String): 매장 대표 사진  
-            - `latitude` (Double): 위도  
-            - `longitude` (Double): 경도  
-            - `siDo` (String): 시/도  
-            - `siGunGu` (String): 시/군/구  
-            - `eupMyoenDong` (String): 읍/면/동  
+          - HTTP 200 OK, Body: `List<ShopResponse>` 형태의 JSON 배열
+            - `shopId` (UUID): 매장 식별자
+            - `nickname` (String): 매장주 닉네임
+            - `profileUrl` (String): 매장주 프로필 이미지 URL
+            - `shopName` (String): 매장 이름
+            - `shopCategory` (String): 매장 카테고리
+            - `shopImageUrl` (String): 매장 대표 사진 URL
+            - `shopDescription` (String): 매장 설명
+            - `longitude` (Double): 경도
+            - `latitude` (Double): 위도
+            - `siDo` (String): 시/도
+            - `siGunGu` (String): 시/군/구
+            - `eupMyoenDong` (String): 읍/면/동
             - `ri` (String): 리
+            - `shopPhoneNumber` (String): 전화번호
+            - `openTime` (String): 오픈 시간 (HH:mm)
+            - `closeTime` (String): 마감 시간 (HH:mm)
           
           ### 사용 방법
-          1. 로그인 후 Authorization 헤더에 엑세스 토큰을 포함합니다.  
+          1. 로그인 후 Authorization 헤더에 액세스 토큰을 포함합니다.
           2. GET `/api/shop` 엔드포인트 호출 시, 본인의 매장 리스트를 반환합니다.
           
           ### 유의 사항
@@ -95,19 +104,23 @@ public interface ShopControllerDocs {
           - `shop-id` (UUID, path): 조회할 매장의 식별자
           
           ### 응답 데이터
-          - `ShopResponse` 형태의 JSON 객체
-            - `id` (UUID): 매장 식별자  
-            - `nickname` (String): 매장주 닉네임  
-            - `profileUrl` (String): 매장주 프로필 이미지 URL  
-            - `shopName` (String): 매장 이름  
+          - HTTP 200 OK, Body: `ShopResponse` 형태의 JSON 객체
+            - `shopId` (UUID): 매장 식별자
+            - `nickname` (String): 매장주 닉네임
+            - `profileUrl` (String): 매장주 프로필 이미지 URL
+            - `shopName` (String): 매장 이름
             - `shopCategory` (String): 매장 카테고리
-            - `shopImageUrl` (String): 매장 대표 사진
-            - `latitude` (Double): 위도  
-            - `longitude` (Double): 경도  
-            - `siDo` (String): 시/도  
-            - `siGunGu` (String): 시/군/구  
-            - `eupMyoenDong` (String): 읍/면/동  
+            - `shopImageUrl` (String): 매장 대표 사진 URL
+            - `shopDescription` (String): 매장 설명
+            - `longitude` (Double): 경도
+            - `latitude` (Double): 위도
+            - `siDo` (String): 시/도
+            - `siGunGu` (String): 시/군/구
+            - `eupMyoenDong` (String): 읍/면/동
             - `ri` (String): 리
+            - `shopPhoneNumber` (String): 전화번호
+            - `openTime` (String): 오픈 시간 (HH:mm)
+            - `closeTime` (String): 마감 시간 (HH:mm)
           
           ### 사용 방법
           1. GET `/api/shop/{shop-id}` 경로에 조회할 매장 ID를 넣어 호출합니다.

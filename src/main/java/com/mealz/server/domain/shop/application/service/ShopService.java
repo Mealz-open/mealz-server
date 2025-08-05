@@ -43,11 +43,15 @@ public class ShopService {
         .shopName(request.getShopName())
         .shopCategory(request.getShopCategory())
         .shopImageUrl(shopProfileUrl)
+        .shopDescription(request.getShopDescription())
         .geom(PostGisUtil.makePoint(request.getLongitude(), request.getLatitude()))
         .siDo(request.getSiDo())
         .siGunGu(request.getSiGunGu())
         .eupMyoenDong(request.getEupMyoenDong())
         .ri(request.getRi())
+        .shopPhoneNumber(request.getShopPhoneNumber())
+        .openTime(request.getOpenTime())
+        .closeTime(request.getCloseTime())
         .build();
     shopRepository.save(shop);
   }
