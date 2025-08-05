@@ -20,9 +20,9 @@ public class ShopRequest {
 
   private ShopCategory shopCategory;
 
-  private long latitude;
+  private double longitude; // 경도
 
-  private long longitude;
+  private double latitude; // 위도
 
   @NotBlank
   private String siDo;

@@ -64,7 +64,11 @@ public class MemberService {
         });
   }
 
-  public boolean isValidMemberType(Member member, MemberType memberType) {
-    return member.getMemberType().equals(memberType);
+  public void validateMemberType(Member member, MemberType memberType) {
+    if (!member.getMemberType().equals(memberType)) {
+      log.error("MemberType 검증 실패. 사용자 MemberType: {}, 검증 MemberType: {}",
+          member.getMemberType(), memberType);
+      throw new CustomException(ErrorCode.INVALID_MEMBER_TYPE);
+    }
   }
 }

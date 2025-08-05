@@ -5,7 +5,6 @@ import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
-import com.mealz.server.domain.shop.application.mapper.ShopMapper;
 import com.mealz.server.domain.shop.infrastructure.entity.Shop;
 import com.mealz.server.domain.shop.infrastructure.repository.ShopRepository;
 import com.mealz.server.global.exception.CustomException;
@@ -26,19 +25,16 @@ public class ShopService {
 
   private final ShopRepository shopRepository;
   private final MemberService memberService;
-  private final ShopMapper shopMapper;
 
   @Transactional
   public void createShop(Member member, ShopRequest request) {
-    if (memberService.isValidMemberType(member, MemberType.DONATOR)) {
-      log.error("기부자만 가게 등록 가능. 요청 MemberType: {}", member.getMemberType());
-      throw new CustomException(ErrorCode.INVALID_MEMBER_TYPE);
-    }
+    memberService.validateMemberType(member, MemberType.DONATOR);
 
     Shop shop = Shop.builder()
         .member(member)
         .shopName(request.getShopName())
-        .geom(PostGisUtil.makePoint(request.getLatitude(), request.getLongitude()))
+        .shopCategory(request.getShopCategory())
+        .geom(PostGisUtil.makePoint(request.getLongitude(), request.getLatitude()))
         .siDo(request.getSiDo())
         .siGunGu(request.getSiGunGu())
         .eupMyoenDong(request.getEupMyoenDong())
@@ -52,13 +48,13 @@ public class ShopService {
     Member member = memberService.findMemberById(memberId);
     List<Shop> shops = shopRepository.findByMember(member);
     return shops.stream()
-        .map(shopMapper::toShopResponse)
+        .map(ShopResponse::from)
         .collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
   public ShopResponse getShop(UUID shopId) {
-    return shopMapper.toShopResponse(findShopById(shopId));
+    return ShopResponse.from(findShopById(shopId));
   }
 
   public Shop findShopById(UUID shopId) {
@@ -69,8 +65,8 @@ public class ShopService {
         });
   }
 
-  private void validateOwnedShop(Member member, Shop shop) {
-    if (!shop.getMember().equals(member)) {
+  public void validateOwnedShop(Member member, Shop shop) {
+    if (!shop.getMember().getMemberId().equals(member.getMemberId())) {
       log.error("가게 소유주가 아닙니다: 요청 가게: {}, 요청 회원: {}", shop.getShopId(), member.getMemberId());
       throw new CustomException(ErrorCode.NOT_OWNED_SHOP);
     }

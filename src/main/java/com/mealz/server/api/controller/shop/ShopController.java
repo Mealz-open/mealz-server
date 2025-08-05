@@ -42,7 +42,7 @@ public class ShopController implements ShopControllerDocs {
   }
 
   @Override
-  @GetMapping("/{member-id}")
+  @GetMapping("/member/{member-id}")
   @LogMonitoringInvocation
   public ResponseEntity<List<ShopResponse>> getMyShops(
       @PathVariable(name = "member-id") UUID memberId
