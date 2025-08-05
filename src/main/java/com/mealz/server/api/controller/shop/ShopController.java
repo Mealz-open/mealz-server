@@ -1,6 +1,7 @@
 package com.mealz.server.api.controller.shop;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import com.mealz.server.domain.shop.application.service.ShopService;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,6 +43,15 @@ public class ShopController implements ShopControllerDocs {
   ) {
     shopService.createShop(customOAuth2User.getMember(), request);
     return ResponseEntity.ok().build();
+  }
+
+  @Override
+  @GetMapping()
+  @LogMonitoringInvocation
+  public ResponseEntity<Page<ShopResponse>> filteredShop(
+      @ParameterObject ShopFilteredRequest request
+  ) {
+    return ResponseEntity.ok(shopService.filteredShop(request));
   }
 
   @Override
