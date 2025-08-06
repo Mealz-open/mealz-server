@@ -4,6 +4,7 @@ import com.mealz.server.domain.shop.core.constant.ShopSortField;
 import com.mealz.server.global.util.PageableConstants;
 import com.mealz.server.global.util.PageableUtil;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,10 +17,12 @@ import org.springframework.data.domain.Sort.Direction;
 @Setter
 @Builder
 @AllArgsConstructor
-public class ShopFilteredRequest {
+public class ShopDistanceFilteredRequest {
 
+  @NotNull
   private double longitude;
 
+  @NotNull
   private double latitude;
 
   @Min(value = 0, message = "반경 값은 양수만 입력 가능합니다")
@@ -33,7 +36,7 @@ public class ShopFilteredRequest {
 
   private Sort.Direction sortDirection;
 
-  public ShopFilteredRequest() {
+  public ShopDistanceFilteredRequest() {
     this.pageNumber = 1;
     this.pageSize = PageableConstants.DEFAULT_PAGE_SIZE;
     this.sortField = ShopSortField.CREATED_DATE;

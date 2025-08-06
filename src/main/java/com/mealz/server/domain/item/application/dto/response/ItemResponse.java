@@ -5,7 +5,9 @@ import com.mealz.server.domain.item.infrastructure.entity.Item;
 import com.mealz.server.domain.item.infrastructure.entity.ItemImage;
 import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import com.mealz.server.global.util.CommonUtil;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,8 +33,11 @@ public record ItemResponse(
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     LocalDateTime pickupStartTime,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    LocalDateTime pickupEndTime
+    LocalDateTime pickupEndTime,
+    boolean pickupToday
 ) {
+
+  private static final LocalDate TODAY = LocalDate.now(ZoneId.of("Asia/Seoul"));
 
   public static ItemResponse from(Item item, List<ItemImage> images) {
     List<String> imageUrls = new ArrayList<>();
@@ -57,6 +62,7 @@ public record ItemResponse(
         .expiredDate(item.getExpiredDate())
         .pickupStartTime(item.getPickupStartTime())
         .pickupEndTime(item.getPickupEndTime())
+        .pickupToday(item.getPickupStartTime().toLocalDate().isEqual(TODAY))
         .build();
   }
 }
