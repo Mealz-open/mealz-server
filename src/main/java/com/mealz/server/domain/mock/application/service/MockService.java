@@ -4,14 +4,20 @@ import static com.mealz.server.domain.member.core.constant.Role.ROLE_TEST;
 import static com.mealz.server.domain.member.core.constant.Role.ROLE_TEST_ADMIN;
 
 import com.mealz.server.domain.auth.core.service.TokenProvider;
+import com.mealz.server.domain.item.infrastructure.entity.Item;
+import com.mealz.server.domain.item.infrastructure.repository.ItemRepository;
+import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.member.infrastructure.repository.MemberRepository;
 import com.mealz.server.domain.mock.application.dto.request.LoginRequest;
 import com.mealz.server.domain.mock.application.dto.response.LoginResponse;
+import com.mealz.server.domain.shop.infrastructure.entity.Shop;
+import com.mealz.server.domain.shop.infrastructure.repository.ShopRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
+import net.datafaker.Faker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +28,16 @@ public class MockService {
 
   private final MemberRepository memberRepository;
   private final MockMemberFactory mockMemberFactory;
+  private final MockShopFactory mockShopFactory;
+  private final MockItemFactory mockItemFactory;
   private final TokenProvider tokenProvider;
-  @Qualifier("applicationTaskExecutor")
-  private final TaskExecutor taskExecutor;
+  private final Faker koFaker;
+  private final ShopRepository shopRepository;
+  private final ItemRepository itemRepository;
 
-    /*
-    ======================================회원======================================
-     */
+  /*
+  ======================================회원======================================
+   */
 
   /**
    * 개발자용 테스트 로그인 로직
@@ -67,6 +76,44 @@ public class MockService {
     log.debug("데이터베이스에 저장된 테스트 유저를 모두 삭제합니다.");
     memberRepository.deleteAllByRole(ROLE_TEST);
     memberRepository.deleteAllByRole(ROLE_TEST_ADMIN);
+  }
+
+  @Transactional
+  public void createMockMember(int count) {
+    List<Member> members = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
+      members.add(mockMemberFactory.generate());
+    }
+    memberRepository.saveAll(members);
+  }
+
+  /*
+  ======================================매장======================================
+   */
+
+  @Transactional
+  public void createMockShop(int count) {
+    List<Member> donators = memberRepository.findAllByMemberType(MemberType.DONATOR);
+
+    List<Shop> shops = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
+      shops.add(mockShopFactory.generate(donators.get(koFaker.random().nextInt(donators.size()))));
+    }
+    shopRepository.saveAll(shops);
+  }
+
+  /*
+  ======================================매장======================================
+   */
+  @Transactional
+  public void createMockItem(int count) {
+    List<Shop> shops = shopRepository.findAll();
+
+    List<Item> items = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
+      items.add(mockItemFactory.generateItem(shops.get(koFaker.random().nextInt(shops.size()))));
+    }
+    itemRepository.saveAll(items);
   }
 
 }
