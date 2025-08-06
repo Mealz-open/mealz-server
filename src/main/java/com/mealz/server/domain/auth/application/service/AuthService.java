@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class AuthService {
     tokenStore.save(AuthUtil.getRefreshTokenTtlKey(memberId), newRefreshToken, jwtProperties.refreshExpMillis());
 
     // 쿠키에 accessToken, refreshToken 추가
-    response.addCookie(CookieUtil.createCookie(ACCESS_TOKEN_KEY, newAccessToken, jwtProperties.accessExpMillis() / 1000));
-    response.addCookie(CookieUtil.createCookie(REFRESH_TOKEN_KEY, newRefreshToken, jwtProperties.refreshExpMillis() / 1000));
+    response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie(ACCESS_TOKEN_KEY, newAccessToken, jwtProperties.accessExpMillis() / 1000).toString());
+    response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie(REFRESH_TOKEN_KEY, newRefreshToken, jwtProperties.refreshExpMillis() / 1000).toString());
   }
 }
