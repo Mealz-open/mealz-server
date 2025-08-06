@@ -18,6 +18,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -51,8 +52,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     tokenStore.save(AuthUtil.getRefreshTokenTtlKey(member.getMemberId().toString()), refreshToken, jwtProperties.refreshExpMillis());
 
     // 쿠키에 accessToken, refreshToken 추가
-    response.addCookie(CookieUtil.createCookie(ACCESS_TOKEN_KEY, accessToken, jwtProperties.accessExpMillis() / 1000));
-    response.addCookie(CookieUtil.createCookie(REFRESH_TOKEN_KEY, refreshToken, jwtProperties.refreshExpMillis() / 1000));
+    response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie(ACCESS_TOKEN_KEY, accessToken, jwtProperties.accessExpMillis() / 1000).toString());
+    response.addHeader(HttpHeaders.SET_COOKIE, CookieUtil.createCookie(REFRESH_TOKEN_KEY, refreshToken, jwtProperties.refreshExpMillis() / 1000).toString());
 
     // 로그인 성공 후 메인 페이지로 리다이렉트
     try {
