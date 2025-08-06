@@ -5,6 +5,8 @@ import static com.mealz.server.domain.member.core.constant.Role.ROLE_TEST_ADMIN;
 
 import com.mealz.server.domain.auth.core.service.TokenProvider;
 import com.mealz.server.domain.item.infrastructure.entity.Item;
+import com.mealz.server.domain.item.infrastructure.entity.ItemImage;
+import com.mealz.server.domain.item.infrastructure.repository.ItemImageRepository;
 import com.mealz.server.domain.item.infrastructure.repository.ItemRepository;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
@@ -34,6 +36,7 @@ public class MockService {
   private final Faker koFaker;
   private final ShopRepository shopRepository;
   private final ItemRepository itemRepository;
+  private final ItemImageRepository itemImageRepository;
 
   /*
   ======================================회원======================================
@@ -113,7 +116,13 @@ public class MockService {
     for (int i = 0; i < count; i++) {
       items.add(mockItemFactory.generateItem(shops.get(koFaker.random().nextInt(shops.size()))));
     }
-    itemRepository.saveAll(items);
+    List<Item> savedItems = itemRepository.saveAll(items);
+
+    List<ItemImage> images = new ArrayList<>();
+    for (Item item : savedItems) {
+      images.addAll(mockItemFactory.generateImages(item));
+    }
+    itemImageRepository.saveAll(images);
   }
 
 }
