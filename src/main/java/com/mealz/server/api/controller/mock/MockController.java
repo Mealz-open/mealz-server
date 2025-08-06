@@ -32,4 +32,25 @@ public class MockController implements MockControllerDocs {
       @Valid @ModelAttribute LoginRequest request) {
     return ResponseEntity.ok(mockService.testSocialLogin(request));
   }
+
+  @PostMapping(value = "/member")
+  @LogMonitoringInvocation
+  public ResponseEntity<Void> createMockMember(int count) {
+    mockService.createMockMember(count);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping(value = "/shop")
+  @LogMonitoringInvocation
+  public ResponseEntity<Void> createMockShop(int count) {
+    mockService.createMockShop(count);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping(value = "/item")
+  @LogMonitoringInvocation
+  public ResponseEntity<Void> createMockItems(int count) {
+    mockService.createMockItem(count);
+    return ResponseEntity.ok().build();
+  }
 }
