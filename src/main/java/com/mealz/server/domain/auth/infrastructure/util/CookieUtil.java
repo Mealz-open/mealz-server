@@ -62,7 +62,7 @@ public class CookieUtil {
     return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_KEY, accessToken)
         .path("/")
         .httpOnly(false)
-        .secure(false)
+        .secure(true)
         .sameSite("None")
         .maxAge(expirationTimeInSeconds)
         .build();
@@ -77,7 +77,7 @@ public class CookieUtil {
     return ResponseCookie.from(AuthConstants.REFRESH_TOKEN_KEY, refreshToken)
         .path("/")
         .httpOnly(true)
-        .secure(false)
+        .secure(true)
         .sameSite("None")
         .maxAge(expirationTimeInSeconds)
         .build();
