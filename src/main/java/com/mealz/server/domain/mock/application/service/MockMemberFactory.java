@@ -84,7 +84,7 @@ public class MockMemberFactory {
         .orElse(AccountStatus.ACTIVE_ACCOUNT);
     MemberType memberType = requestOptional
         .map(LoginRequest::getMemberType)
-        .orElse(MemberType.BENEFICIARY);
+        .orElseGet(() -> koFaker.options().option(MemberType.class));
     boolean firstLogin = requestOptional
         .map(LoginRequest::getIsFirstLogin)
         .orElseGet(() -> koFaker.random().nextBoolean());
