@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import java.util.Arrays;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 
 @UtilityClass
 @Slf4j
@@ -17,7 +18,7 @@ public class CookieUtil {
    *
    * @return 발급된 쿠키를 반환합니다
    */
-  public Cookie createCookie(String key, String token, long expirationTimeInSeconds) {
+  public ResponseCookie createCookie(String key, String token, long expirationTimeInSeconds) {
     if (key.equals(AuthConstants.ACCESS_TOKEN_KEY)) {
       return createAccessTokenCookie(token, expirationTimeInSeconds);
     } else if (key.equals(AuthConstants.REFRESH_TOKEN_KEY)) {
@@ -56,29 +57,29 @@ public class CookieUtil {
    * 엑세스 토큰이 들어있는 쿠키를 발급합니다
    * httpOnly = false
    */
-  private Cookie createAccessTokenCookie(String accessToken, long expirationTimeInSeconds) {
+  private ResponseCookie createAccessTokenCookie(String accessToken, long expirationTimeInSeconds) {
     log.debug("accessToken을 포함한 쿠키를 발급합니다.");
-    Cookie cookie = new Cookie(AuthConstants.ACCESS_TOKEN_KEY, accessToken);
-    cookie.setHttpOnly(false);
-    cookie.setSecure(false);
-    cookie.setPath("/");
-//    cookie.setDomain(AuthConstants.ROOT_DOMAIN);
-    cookie.setMaxAge((int) expirationTimeInSeconds);
-    return cookie;
+    return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_KEY, accessToken)
+        .path("/")
+        .httpOnly(false)
+        .secure(false)
+        .sameSite("None")
+        .maxAge(expirationTimeInSeconds)
+        .build();
   }
 
   /**
    * 리프레시 토큰이 들어있는 쿠키를 발급합니다.
    * httpOnly = true
    */
-  private Cookie createRefreshTokenCookie(String refreshToken, long expirationTimeInSeconds) {
+  private ResponseCookie createRefreshTokenCookie(String refreshToken, long expirationTimeInSeconds) {
     log.debug("refreshToken을 포함한 쿠키를 발급합니다.");
-    Cookie cookie = new Cookie(AuthConstants.REFRESH_TOKEN_KEY, refreshToken);
-    cookie.setHttpOnly(true);
-    cookie.setSecure(false);
-    cookie.setPath("/");
-//    cookie.setDomain(AuthConstants.ROOT_DOMAIN);
-    cookie.setMaxAge((int) expirationTimeInSeconds);
-    return cookie;
+    return ResponseCookie.from(AuthConstants.REFRESH_TOKEN_KEY, refreshToken)
+        .path("/")
+        .httpOnly(true)
+        .secure(false)
+        .sameSite("None")
+        .maxAge(expirationTimeInSeconds)
+        .build();
   }
 }
