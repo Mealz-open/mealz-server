@@ -1,7 +1,6 @@
 package com.mealz.server.domain.shop.infrastructure.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
 import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import com.mealz.server.global.persistence.BasePostgresEntity;
@@ -32,7 +31,6 @@ import org.geolatte.geom.Point;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Shop extends BasePostgresEntity {
 
   @Id

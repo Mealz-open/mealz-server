@@ -1,10 +1,12 @@
 package com.mealz.server.domain.item.application.service;
 
+import com.mealz.server.domain.item.application.dto.request.ItemFilteredRequest;
 import com.mealz.server.domain.item.application.dto.request.ItemRequest;
 import com.mealz.server.domain.item.application.dto.response.ItemResponse;
 import com.mealz.server.domain.item.infrastructure.entity.Item;
 import com.mealz.server.domain.item.infrastructure.entity.ItemImage;
 import com.mealz.server.domain.item.infrastructure.repository.ItemRepository;
+import com.mealz.server.domain.item.infrastructure.repository.ItemRepositoryCustom;
 import com.mealz.server.domain.member.application.service.MemberService;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
 
   private final ItemRepository itemRepository;
+  private final ItemRepositoryCustom itemRepositoryCustom;
   private final ShopService shopService;
   private final ItemImageService itemImageService;
   private final MemberService memberService;
@@ -51,6 +55,20 @@ public class ItemService {
     if (!CommonUtil.nullOrEmpty(request.getItemImages())) {
       itemImageService.saveImages(savedItem, request.getItemImages());
     }
+  }
+
+  @Transactional(readOnly = true)
+  public Page<ItemResponse> filteredItem(ItemFilteredRequest request) {
+    Page<Item> itemPage = itemRepositoryCustom.filteredItem(
+        request.getDate(),
+        request.getShopCategory(),
+        request.toPageable()
+    );
+
+    return itemPage.map(item -> {
+      List<ItemImage> images = itemImageService.getImagesByItem(item);
+      return ItemResponse.from(item, images);
+    });
   }
 
   @Transactional(readOnly = true)

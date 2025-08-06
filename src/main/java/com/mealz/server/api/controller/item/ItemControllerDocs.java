@@ -1,10 +1,12 @@
 package com.mealz.server.api.controller.item;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.item.application.dto.request.ItemFilteredRequest;
 import com.mealz.server.domain.item.application.dto.request.ItemRequest;
 import com.mealz.server.domain.item.application.dto.response.ItemResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 public interface ItemControllerDocs {
@@ -38,6 +40,68 @@ public interface ItemControllerDocs {
   ResponseEntity<Void> createItem(
       CustomOAuth2User customOAuth2User,
       ItemRequest request
+  );
+
+  @Operation(
+      summary = "아이템 필터링 조회",
+      description = """
+          ### 요청 파라미터
+          - `date` (String, optional): 조회할 픽업 날짜. 형식 `yyyy-MM-dd`. 지정하지 않으면 전체 날짜 대상.
+          - `shopCategory` (ShopCategory, optional): 필터링할 가게 카테고리. 지정하지 않으면 전체 카테고리 대상.
+          - `pageNumber` (int, optional, default = 1): 조회할 페이지 번호 (1부터 시작).
+          - `pageSize` (int, optional, default = PageableConstants.DEFAULT_PAGE_SIZE): 한 페이지당 아이템 수. `MAX_PAGE_SIZE`(`PageableConstants.MAX_PAGE_SIZE`)를 초과할 수 없습니다.
+          - `sortField` (ItemSortField, optional, default = CREATED_DATE): 정렬 기준 필드 (`CREATED_DATE`).
+          - `sortDirection` (Sort.Direction, optional, default = DESC): 정렬 방향 (`ASC`, `DESC`).
+          
+          ### 응답 데이터
+          반환되는 `Page<ItemResponse>`의 JSON 구조:
+          
+          ```json
+          {
+            "content": [
+              {
+                "itemId": "UUID",
+                "itemName": "String",
+                "itemImageUrls": ["String", ...],
+                "shopCategory": "ShopCategory",
+                "shopName": "String",
+                "latitude": double,
+                "longitude": double,
+                "siDo": "String",
+                "siGunGu": "String",
+                "eupMyoenDong": "String",
+                "ri": "String",
+                "quantity": int,
+                "expiredDate": "yyyy-MM-dd'T'HH:mm:ss",
+                "pickupStartTime": "yyyy-MM-dd'T'HH:mm:ss",
+                "pickupEndTime": "yyyy-MM-dd'T'HH:mm:ss",
+                "pickupToday": boolean
+              },
+              …
+            ],
+            "totalElements": long,
+            "totalPages": int,
+            "number": int,      // 0-based 페이지 인덱스
+            "size": int         // 요청한 pageSize
+          }
+          ```
+          
+          ### 사용 방법
+          1. HTTP GET 요청을 아래 형태로 호출합니다.
+             ```
+             GET /api/item?date=2025-08-06&shopCategory=CAFE&pageNumber=1&pageSize=20&sortField=CREATED_DATE&sortDirection=DESC
+             ```
+          2. 응답으로 반환된 `content` 배열을 화면에 렌더링하고, `totalElements`/`totalPages`로 페이징 UI를 구성합니다.
+          
+          ### 유의 사항
+          - `pageNumber`는 1 이상만 유효하며, 1보다 작은 값은 1로 처리됩니다.
+          - `pageSize`가 `0`이거나 음수일 경우 기본값이 적용됩니다.
+          - `sortField` 또는 `sortDirection` 미지정 시, 기본값(`CREATED_DATE` DESC)으로 정렬됩니다.
+          - `pickupToday`는 `pickupStartTime`의 날짜가 서버 기준 오늘(`Asia/Seoul`)과 같으면 `true`입니다.
+          """
+  )
+  ResponseEntity<Page<ItemResponse>> filteredItem(
+      ItemFilteredRequest request
   );
 
   @Operation(

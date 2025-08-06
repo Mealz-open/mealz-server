@@ -1,6 +1,7 @@
 package com.mealz.server.api.controller.item;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
+import com.mealz.server.domain.item.application.dto.request.ItemFilteredRequest;
 import com.mealz.server.domain.item.application.dto.request.ItemRequest;
 import com.mealz.server.domain.item.application.dto.response.ItemResponse;
 import com.mealz.server.domain.item.application.service.ItemService;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,6 +41,14 @@ public class ItemController implements ItemControllerDocs {
       @Valid @ModelAttribute ItemRequest request) {
     itemService.createItem(customOAuth2User.getMember(), request);
     return ResponseEntity.ok().build();
+  }
+
+  @Override
+  @GetMapping(value = "")
+  @LogMonitoringInvocation
+  public ResponseEntity<Page<ItemResponse>> filteredItem(
+      @Valid @ParameterObject ItemFilteredRequest request) {
+    return ResponseEntity.ok(itemService.filteredItem(request));
   }
 
   @Override
