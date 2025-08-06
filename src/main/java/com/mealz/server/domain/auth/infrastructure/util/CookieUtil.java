@@ -63,7 +63,7 @@ public class CookieUtil {
         .path("/")
         .httpOnly(false)
         .secure(false)
-        .sameSite("Lax")
+        .sameSite("None")
         .maxAge(expirationTimeInSeconds)
         .build();
   }
@@ -78,7 +78,7 @@ public class CookieUtil {
         .path("/")
         .httpOnly(true)
         .secure(false)
-        .sameSite("Lax")
+        .sameSite("None")
         .maxAge(expirationTimeInSeconds)
         .build();
   }

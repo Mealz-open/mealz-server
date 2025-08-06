@@ -7,6 +7,7 @@ import com.mealz.server.domain.auth.infrastructure.constant.SecurityUrls;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2UserService;
 import com.mealz.server.domain.auth.infrastructure.util.AuthUtil;
+import com.mealz.server.domain.auth.infrastructure.util.CookieUtil;
 import com.mealz.server.global.exception.ErrorCode;
 import com.mealz.server.global.exception.ErrorResponse;
 import com.mealz.server.global.util.CommonUtil;
@@ -51,6 +52,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     try {
       String token = AuthUtil.extractAccessTokenFromRequest(request);
+      if (CommonUtil.nvl(token, "").isEmpty()) {
+        log.warn("HTTP Request에 Authorization으로 설정된 엑세스 토큰이 없습니다.");
+        log.debug("쿠키에 포함된 엑세스 토큰을 추출합니다.");
+        token = CookieUtil.extractedByCookieName(request.getCookies(), AuthConstants.ACCESS_TOKEN_KEY).getValue();
+      }
 
       // 토큰 검증: 토큰이 유효하면 인증 설정
       if (tokenProvider.isValidToken(token)) {
