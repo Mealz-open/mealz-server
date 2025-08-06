@@ -27,8 +27,8 @@ public class MockShopFactory {
     ShopCategory category = categories[idx];
 
     // 2) 위도/경도 (koFaker.address()의 문자열을 파싱)
-    double latitude = Double.parseDouble(koFaker.address().latitude());
-    double longitude = Double.parseDouble(koFaker.address().longitude());
+    double latitude  = koFaker.number().randomDouble(6, 33, 38);
+    double longitude = koFaker.number().randomDouble(6, 126, 130);
 
     // 3) 전화번호: 010-XXXX-XXXX
     String phoneNumber = String.format("010-%04d-%04d",
