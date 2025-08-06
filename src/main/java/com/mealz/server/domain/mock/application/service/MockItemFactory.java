@@ -58,7 +58,6 @@ public class MockItemFactory {
     List<ItemImage> images = new ArrayList<>(count);
     for (int i = 0; i < count; i++) {
       images.add(ItemImage.builder()
-          // ID는 JPA에 위임
           .item(item)
           .itemImageUrl(koFaker.internet().image())
           .build());
