@@ -1,7 +1,7 @@
 package com.mealz.server.api.controller.shop;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
-import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
+import com.mealz.server.domain.shop.application.dto.request.ShopDistanceFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import com.mealz.server.domain.shop.application.service.ShopService;
@@ -46,12 +46,12 @@ public class ShopController implements ShopControllerDocs {
   }
 
   @Override
-  @GetMapping()
+  @GetMapping("/distance")
   @LogMonitoringInvocation
-  public ResponseEntity<Page<ShopResponse>> filteredShop(
-      @ParameterObject ShopFilteredRequest request
+  public ResponseEntity<Page<ShopResponse>> filteredShopByDistance(
+      @ParameterObject ShopDistanceFilteredRequest request
   ) {
-    return ResponseEntity.ok(shopService.filteredShop(request));
+    return ResponseEntity.ok(shopService.filteredShopByDistance(request));
   }
 
   @Override

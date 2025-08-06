@@ -1,7 +1,7 @@
 package com.mealz.server.api.controller.shop;
 
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2User;
-import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
+import com.mealz.server.domain.shop.application.dto.request.ShopDistanceFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,7 +63,7 @@ public interface ShopControllerDocs {
   );
 
   @Operation(
-      summary = "매장 필터링 조회",
+      summary = "매장 거리별 필터링 조회",
       description = """
         ### 요청 파라미터
         - `longitude` (double, required): 기준이 되는 경도 값
@@ -107,12 +107,13 @@ public interface ShopControllerDocs {
         - 지정된 반경 내의 매장을 거리 또는 생성일 기준으로 정렬하여 페이징된 형태로 반환합니다.  
         
         ### 유의 사항
+        - `longitude`, `latitude`는 필수로 입력해야합니다
         - `radiusInMeters`는 양수만 허용됩니다.    
         - 페이지 번호(`pageNumber`)가 1 미만일 경우 자동으로 1로 처리됩니다.  
         """
   )
-  ResponseEntity<Page<ShopResponse>> filteredShop(
-      ShopFilteredRequest request
+  ResponseEntity<Page<ShopResponse>> filteredShopByDistance(
+      ShopDistanceFilteredRequest request
   );
 
   @Operation(

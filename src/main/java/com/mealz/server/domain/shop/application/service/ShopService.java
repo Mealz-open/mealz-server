@@ -3,7 +3,7 @@ package com.mealz.server.domain.shop.application.service;
 import com.mealz.server.domain.member.application.service.MemberService;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
-import com.mealz.server.domain.shop.application.dto.request.ShopFilteredRequest;
+import com.mealz.server.domain.shop.application.dto.request.ShopDistanceFilteredRequest;
 import com.mealz.server.domain.shop.application.dto.request.ShopRequest;
 import com.mealz.server.domain.shop.application.dto.response.ShopResponse;
 import com.mealz.server.domain.shop.infrastructure.entity.Shop;
@@ -61,7 +61,7 @@ public class ShopService {
   }
 
   @Transactional(readOnly = true)
-  public Page<ShopResponse> filteredShop(ShopFilteredRequest request) {
+  public Page<ShopResponse> filteredShopByDistance(ShopDistanceFilteredRequest request) {
     Page<Shop> shops = shopRepositoryCustom.filteredShopByDistance(
         request.getLongitude(),
         request.getLatitude(),
