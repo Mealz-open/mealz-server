@@ -74,7 +74,7 @@ public class CookieUtil {
   private Cookie createRefreshTokenCookie(String refreshToken, long expirationTimeInSeconds) {
     log.debug("refreshToken을 포함한 쿠키를 발급합니다.");
     Cookie cookie = new Cookie(AuthConstants.REFRESH_TOKEN_KEY, refreshToken);
-    cookie.setHttpOnly(true);
+    cookie.setHttpOnly(false);
     cookie.setSecure(true);
     cookie.setPath("/");
     cookie.setDomain(AuthConstants.ROOT_DOMAIN);

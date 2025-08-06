@@ -10,7 +10,7 @@ public final class AuthConstants {
   public static final String HEADER_AUTHORIZATION = "Authorization";
 
   // CookieUtil
-  public static final String ROOT_DOMAIN = "ticketmate.site";
+  public static final String ROOT_DOMAIN = "/";
   public static final String ACCESS_TOKEN_KEY = "accessToken";
   public static final String REFRESH_TOKEN_KEY = "refreshToken";
 
