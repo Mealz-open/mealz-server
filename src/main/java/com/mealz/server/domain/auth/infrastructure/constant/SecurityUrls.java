@@ -17,6 +17,7 @@ public class SecurityUrls {
       // API
       "/api/auth/reissue", // accessToken 재발급
       "/login/oauth2/code/**", // 소셜 로그인
+      "/login/**",
 
       // Swagger
       "/docs/swagger-ui/**", // Swagger UI
