@@ -5,11 +5,9 @@ import com.mealz.server.domain.auth.infrastructure.constant.AuthConstants;
 import com.mealz.server.domain.auth.infrastructure.constant.SecurityUrls;
 import com.mealz.server.domain.auth.infrastructure.filter.TokenAuthenticationFilter;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomLogoutHandler;
-import com.mealz.server.domain.auth.infrastructure.handler.CustomOAuth2FailureHandler;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomSuccessHandler;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomClientRegistrationRepository;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +26,6 @@ public class SecurityConfig {
 
   private final TokenProvider tokenProvider;
   private final CustomSuccessHandler customSuccessHandler;
-  private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final CustomClientRegistrationRepository customClientRegistrationRepository;
   private final CustomLogoutHandler customLogoutHandler;
@@ -69,11 +66,7 @@ public class SecurityConfig {
                 userInfoEndpointConfig
                     .userService(customOAuth2UserService))
             .successHandler(customSuccessHandler)
-            .failureHandler(customOAuth2FailureHandler)
         )
-        .exceptionHandling(exception -> exception
-            .authenticationEntryPoint((request, response, authException) ->
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
         // JWT Filter
         .addFilterAfter(
             new TokenAuthenticationFilter(tokenProvider, customOAuth2UserService),
