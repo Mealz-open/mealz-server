@@ -24,7 +24,9 @@ public class SecurityUrls {
       "/v3/api-docs/**", // Swagger API 문서
 
       // Mock
-      "/mock/**"
+      "/mock/**",
+
+      "**/favicon.ico"
 
   );
 
