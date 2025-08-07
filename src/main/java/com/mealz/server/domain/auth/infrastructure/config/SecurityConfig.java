@@ -5,6 +5,7 @@ import com.mealz.server.domain.auth.infrastructure.constant.AuthConstants;
 import com.mealz.server.domain.auth.infrastructure.constant.SecurityUrls;
 import com.mealz.server.domain.auth.infrastructure.filter.TokenAuthenticationFilter;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomLogoutHandler;
+import com.mealz.server.domain.auth.infrastructure.handler.CustomOAuth2FailureHandler;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomSuccessHandler;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomClientRegistrationRepository;
 import com.mealz.server.domain.auth.infrastructure.oauth2.CustomOAuth2UserService;
@@ -26,6 +27,7 @@ public class SecurityConfig {
 
   private final TokenProvider tokenProvider;
   private final CustomSuccessHandler customSuccessHandler;
+  private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final CustomClientRegistrationRepository customClientRegistrationRepository;
   private final CustomLogoutHandler customLogoutHandler;
@@ -65,7 +67,9 @@ public class SecurityConfig {
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig
                     .userService(customOAuth2UserService))
-            .successHandler(customSuccessHandler))
+            .successHandler(customSuccessHandler)
+            .failureHandler(customOAuth2FailureHandler)
+        )
         // JWT Filter
         .addFilterAfter(
             new TokenAuthenticationFilter(tokenProvider, customOAuth2UserService),
