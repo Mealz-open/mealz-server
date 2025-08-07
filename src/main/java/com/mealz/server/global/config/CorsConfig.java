@@ -18,7 +18,7 @@ public class CorsConfig {
   private static final List<String> ALLOWED_ORIGINS = List.of(
 
       // 3000번 포트
-      "http://13.209.241.224:3000", // 프론트
+      "https://www.mealz.store", // 프론트 배포
 
       // API
       "http://13.209.241.224:8087", // 메인 API 서버
