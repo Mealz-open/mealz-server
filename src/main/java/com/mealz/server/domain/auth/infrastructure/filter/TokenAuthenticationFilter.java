@@ -64,6 +64,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         return;
       }
       handleInvalidToken(response, token);
+      return;
     } catch (ExpiredJwtException e) {
       log.error("토큰 만료: {}", e.getMessage());
       sendErrorResponse(response, ErrorCode.EXPIRED_ACCESS_TOKEN);
