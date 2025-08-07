@@ -25,9 +25,9 @@ spring:
 
 springdoc:
   servers:
-    - url: http://13.209.241.224:8087
+    - url: https://api.mealz.store
       description: main-server
-    - url: http://13.209.241.224:8088
+    - url: https://test.mealz.store
       description: test-server
     - url: http://localhost:8080
       description: local-server
