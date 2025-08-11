@@ -42,7 +42,7 @@ public enum ErrorCode {
 
   DUPLICATE_USERNAME(HttpStatus.CONFLICT, "이미 가입된 이메일입니다"),
 
-  MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
+  MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "회원을 찾을 수 없습니다."),
 
   INVALID_MEMBER_TYPE(HttpStatus.BAD_REQUEST, "잘못된 회원 자격입니다"),
 
