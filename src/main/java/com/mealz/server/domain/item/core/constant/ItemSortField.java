@@ -13,6 +13,8 @@ public enum ItemSortField implements SortField {
 
   CREATED_DATE("createdDate"),
 
+  PICKUP_TIME("pickupTime"),
+
   ;
 
   private final String property;
