@@ -26,7 +26,8 @@ public record ShopResponse(
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     LocalTime openTime,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-    LocalTime closeTime
+    LocalTime closeTime,
+    int donateCount
 ) {
 
   public static ShopResponse from(Shop shop) {
@@ -47,6 +48,7 @@ public record ShopResponse(
         .shopPhoneNumber(shop.getShopPhoneNumber())
         .openTime(shop.getOpenTime())
         .closeTime(shop.getCloseTime())
+        .donateCount(shop.getDonateCount())
         .build();
   }
 }

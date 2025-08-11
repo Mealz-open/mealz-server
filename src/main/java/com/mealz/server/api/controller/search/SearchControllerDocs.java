@@ -51,6 +51,7 @@ public interface SearchControllerDocs {
             - `shopPhoneNumber` (String)
             - `openTime` (String, HH:mm, Asia/Seoul)
             - `closeTime` (String, HH:mm, Asia/Seoul)
+            - `donateCount` (int): 기부 횟수
           
           #### 응답 예시 (요약)
           ```json
@@ -72,7 +73,8 @@ public interface SearchControllerDocs {
                 "ri": null,
                 "shopPhoneNumber": "02-1234-5678",
                 "openTime": "09:00",
-                "closeTime": "21:00"
+                "closeTime": "21:00",
+                "donateCount": "30"
               }
             ],
             "...": "Spring Page 기본 필드(총원, 총페이지 등)"

@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -72,4 +73,7 @@ public class Shop extends BasePostgresEntity {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
   private LocalTime closeTime;
+
+  @Builder.Default
+  private int donateCount = 0;
 }
