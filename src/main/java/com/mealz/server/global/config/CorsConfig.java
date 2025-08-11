@@ -24,6 +24,9 @@ public class CorsConfig {
       "http://13.209.241.224:8087", // 메인 API 서버
       "http://13.209.241.224:8088", // 테스트 API 서버
 
+      "https://api.mealz.store",
+      "https://test.mealz.store",
+
       // Local
       "http://localhost:8080", // 로컬 API 서버
       "http://localhost:3000", // 로컬 웹 서버
