@@ -8,6 +8,8 @@ import com.mealz.server.domain.item.infrastructure.repository.ItemRepository;
 import com.mealz.server.domain.member.application.service.MemberService;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.infrastructure.entity.Member;
+import com.mealz.server.domain.shop.infrastructure.entity.Shop;
+import com.mealz.server.domain.shop.infrastructure.repository.ShopRepository;
 import com.mealz.server.domain.trade.application.dto.request.TradeFilteredRequest;
 import com.mealz.server.domain.trade.application.dto.request.TradeRequest;
 import com.mealz.server.domain.trade.application.dto.response.TradeResponse;
@@ -36,6 +38,7 @@ public class TradeService {
   private final ItemService itemService;
   private final ItemRepository itemRepository;
   private final ItemImageService itemImageService;
+  private final ShopRepository shopRepository;
 
   @Transactional
   public void createTrade(Member member, TradeRequest request) {
@@ -48,6 +51,12 @@ public class TradeService {
     }
     item.setQuantity(item.getQuantity() - request.getQuantity());
     Item savedItem = itemRepository.save(item);
+
+    // 매장 나눔 횟수 증가
+    Shop shop = item.getShop();
+    shop.setDonateCount(shop.getDonateCount() + 1);
+    shopRepository.save(shop);
+
     Trade trade = Trade.builder()
         .beneficiary(member)
         .item(savedItem)
