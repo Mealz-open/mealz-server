@@ -74,4 +74,14 @@ public class SecurityConfig {
         )
         .build();
   }
+
+//  @Bean
+//  public CustomAuthenticationEntryPoint jsonAuthenticationEntryPoint() {
+//    return new CustomAuthenticationEntryPoint();
+//  }
+//
+//  @Bean
+//  public CustomAccessDeniedHandler jsonAccessDeniedHandler() {
+//    return new CustomAccessDeniedHandler();
+//  }
 }
