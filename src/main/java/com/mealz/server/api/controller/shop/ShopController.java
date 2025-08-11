@@ -71,4 +71,11 @@ public class ShopController implements ShopControllerDocs {
   ) {
     return ResponseEntity.ok(shopService.getShop(shopId));
   }
+
+  @Override
+  @GetMapping("/donate")
+  @LogMonitoringInvocation
+  public ResponseEntity<List<ShopResponse>> getDonateShops() {
+    return ResponseEntity.ok(shopService.getDonateShops());
+  }
 }

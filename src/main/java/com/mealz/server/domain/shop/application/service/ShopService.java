@@ -85,6 +85,14 @@ public class ShopService {
     return ShopResponse.from(findShopById(shopId));
   }
 
+  @Transactional(readOnly = true)
+  public List<ShopResponse> getDonateShops() {
+    return shopRepository.findTop30ByOrderByDonateCountDesc()
+        .stream()
+        .map(ShopResponse::from)
+        .collect(Collectors.toList());
+  }
+
   public Shop findShopById(UUID shopId) {
     return shopRepository.findById(shopId)
         .orElseThrow(() -> {
