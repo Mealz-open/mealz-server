@@ -60,6 +60,12 @@ public enum ErrorCode {
 
   INVALID_PICKUP_TIME(HttpStatus.BAD_REQUEST, "잘못된 픽업 시간이 요청되었습니다"),
 
+  // TRADE
+
+  TRADE_QUANTITY_EXCEED(HttpStatus.BAD_REQUEST, "요청 수량이 물품 최대 수량을 초과했습니다."),
+
+  TRADE_NOT_FOUND(HttpStatus.BAD_REQUEST, "거래를 찾을 수 없습니다."),
+
   // MOCK DATA TODO: 출시 후 삭제
 
   GENERATE_MOCK_DATA_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Mock 데이터 생성 중 오류 발생"),
