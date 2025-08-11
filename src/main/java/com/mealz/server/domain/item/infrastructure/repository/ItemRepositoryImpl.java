@@ -41,12 +41,6 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         QueryDslUtil.eqIfNotNull(ITEM.shop.shopCategory, shopCategory)
     );
 
-//    ComparableExpression<LocalDateTime> earliestPickupExpression = Expressions.dateTimeTemplate(
-//        LocalDateTime.class,
-//        "least({0})",
-//        ITEM.pickupStartTime
-//    );
-
     Map<String, ComparableExpression<?>> customSortMap = Collections.singletonMap(
         ItemSortField.PICKUP_TIME.getProperty(),
         ITEM.pickupStartTime
