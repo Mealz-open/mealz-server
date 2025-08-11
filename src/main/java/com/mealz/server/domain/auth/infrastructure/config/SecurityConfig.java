@@ -3,6 +3,8 @@ package com.mealz.server.domain.auth.infrastructure.config;
 import com.mealz.server.domain.auth.core.service.TokenProvider;
 import com.mealz.server.domain.auth.infrastructure.constant.AuthConstants;
 import com.mealz.server.domain.auth.infrastructure.constant.SecurityUrls;
+import com.mealz.server.domain.auth.infrastructure.filter.CustomAccessDeniedHandler;
+import com.mealz.server.domain.auth.infrastructure.filter.CustomAuthenticationEntryPoint;
 import com.mealz.server.domain.auth.infrastructure.filter.TokenAuthenticationFilter;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomLogoutHandler;
 import com.mealz.server.domain.auth.infrastructure.handler.CustomSuccessHandler;
@@ -67,11 +69,25 @@ public class SecurityConfig {
                     .userService(customOAuth2UserService))
             .successHandler(customSuccessHandler)
         )
+        .exceptionHandling(ex -> ex
+            .authenticationEntryPoint(customAuthenticationEntryPoint()) // 401
+            .accessDeniedHandler(customAccessDeniedHandler()) // 403
+        )
         // JWT Filter
         .addFilterAfter(
             new TokenAuthenticationFilter(tokenProvider, customOAuth2UserService),
             OAuth2LoginAuthenticationFilter.class
         )
         .build();
+  }
+
+  @Bean
+  public CustomAccessDeniedHandler customAccessDeniedHandler() {
+    return new CustomAccessDeniedHandler();
+  }
+
+  @Bean
+  public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+    return new CustomAuthenticationEntryPoint();
   }
 }
