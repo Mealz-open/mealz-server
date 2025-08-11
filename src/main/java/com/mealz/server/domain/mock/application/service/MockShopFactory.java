@@ -66,7 +66,7 @@ public class MockShopFactory {
         .shopPhoneNumber(phoneNumber)
         .openTime(openTime)
         .closeTime(closeTime)
+        .donateCount(koFaker.random().nextInt(50))
         .build();
   }
-
 }
