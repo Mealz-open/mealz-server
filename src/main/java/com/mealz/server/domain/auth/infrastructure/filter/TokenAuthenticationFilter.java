@@ -14,6 +14,7 @@ import com.mealz.server.global.util.CommonUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -51,16 +52,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     try {
-      String token = AuthUtil.extractAccessTokenFromRequest(request);
+      String token = safeExtractToken(request);
       if (CommonUtil.nvl(token, "").isEmpty()) {
-        log.warn("HTTP Request에 Authorization으로 설정된 엑세스 토큰이 없습니다.");
-        log.debug("쿠키에 포함된 엑세스 토큰을 추출합니다.");
-        try {
-          token = CookieUtil.extractedByCookieName(request.getCookies(), AuthConstants.ACCESS_TOKEN_KEY).getValue();
-        } catch (Exception e) {
-          handleInvalidToken(response, token);
-          return;
-        }
+        log.warn("엑세스 토큰이 없습니다. 401 반환");
+        sendErrorResponse(response, ErrorCode.UNAUTHORIZED);
+        return;
       }
 
       // 토큰 검증: 토큰이 유효하면 인증 설정
@@ -74,6 +70,24 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
       log.error("토큰 만료: {}", e.getMessage());
       sendErrorResponse(response, ErrorCode.EXPIRED_ACCESS_TOKEN);
     }
+  }
+
+  private String safeExtractToken(HttpServletRequest request) {
+    try {
+      String token = AuthUtil.extractAccessTokenFromRequest(request);
+      if (!CommonUtil.nvl(token, "").isEmpty()) {
+        return token;
+      }
+    } catch (Exception ignore) {
+
+    }
+    try {
+      Cookie cookie = CookieUtil.extractedByCookieName(request.getCookies(), AuthConstants.ACCESS_TOKEN_KEY);
+      return cookie != null ? cookie.getValue() : null;
+    } catch (Exception ignore) {
+
+    }
+    return null;
   }
 
   /**
