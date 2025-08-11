@@ -32,7 +32,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-  private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+  private final AntPathMatcher pathMatcher = new AntPathMatcher();
   private final TokenProvider tokenProvider;
   private final CustomOAuth2UserService customOAuth2UserService;
 
@@ -55,7 +55,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
       if (CommonUtil.nvl(token, "").isEmpty()) {
         log.warn("HTTP Request에 Authorization으로 설정된 엑세스 토큰이 없습니다.");
         log.debug("쿠키에 포함된 엑세스 토큰을 추출합니다.");
-        token = CookieUtil.extractedByCookieName(request.getCookies(), AuthConstants.ACCESS_TOKEN_KEY).getValue();
+        try {
+          token = CookieUtil.extractedByCookieName(request.getCookies(), AuthConstants.ACCESS_TOKEN_KEY).getValue();
+        } catch (Exception e) {
+          handleInvalidToken(response, token);
+          return;
+        }
       }
 
       // 토큰 검증: 토큰이 유효하면 인증 설정

@@ -42,10 +42,10 @@ public class SecurityConfig {
         .httpBasic(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(SecurityUrls.AUTH_WHITELIST.toArray(new String[0]))
-            .permitAll() // AUTH_WHITELIST에 등록된 URL은 인증 허용
-            .requestMatchers(SecurityUrls.ADMIN_PATHS.toArray(new String[0]))
-            .hasAnyRole("ADMIN", "TEST_ADMIN") // ADMIN_PATHS에 등록된 URL은 관리자만 접근가능 TODO: 추후 테스트 계정 권한 삭제
+            // AUTH_WHITELIST에 등록된 URL은 인증 허용
+            .requestMatchers(SecurityUrls.AUTH_WHITELIST.toArray(new String[0])).permitAll()
+            // ADMIN_PATHS에 등록된 URL은 관리자만 접근가능 TODO: 추후 테스트 계정 권한 삭제
+            .requestMatchers(SecurityUrls.ADMIN_PATHS.toArray(new String[0])).hasAnyRole("ADMIN", "TEST_ADMIN")
             .anyRequest().authenticated()
         )
         // 로그아웃
