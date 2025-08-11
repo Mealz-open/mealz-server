@@ -1,7 +1,6 @@
 package com.mealz.server.domain.member.infrastructure.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mealz.server.domain.member.core.constant.AccountStatus;
 import com.mealz.server.domain.member.core.constant.MemberType;
 import com.mealz.server.domain.member.core.constant.Role;
@@ -31,7 +30,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(callSuper = true)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member extends BasePostgresEntity {
 
   @Id
