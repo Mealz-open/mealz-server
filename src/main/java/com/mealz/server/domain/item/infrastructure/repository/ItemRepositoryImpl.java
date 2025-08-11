@@ -1,15 +1,19 @@
 package com.mealz.server.domain.item.infrastructure.repository;
 
+import com.mealz.server.domain.item.core.constant.ItemSortField;
 import com.mealz.server.domain.item.infrastructure.entity.Item;
 import com.mealz.server.domain.item.infrastructure.entity.QItem;
 import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import com.mealz.server.domain.shop.infrastructure.entity.QShop;
 import com.mealz.server.global.util.QueryDslUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +41,17 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         QueryDslUtil.eqIfNotNull(ITEM.shop.shopCategory, shopCategory)
     );
 
+//    ComparableExpression<LocalDateTime> earliestPickupExpression = Expressions.dateTimeTemplate(
+//        LocalDateTime.class,
+//        "least({0})",
+//        ITEM.pickupStartTime
+//    );
+
+    Map<String, ComparableExpression<?>> customSortMap = Collections.singletonMap(
+        ItemSortField.PICKUP_TIME.getProperty(),
+        ITEM.pickupStartTime
+    );
+
     // contentQuery 생성
     JPAQuery<Item> contentQuery = queryFactory
         .selectFrom(ITEM)
@@ -48,7 +63,8 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         contentQuery,
         pageable,
         Item.class,
-        ITEM.getMetadata().getName()
+        ITEM.getMetadata().getName(),
+        customSortMap
     );
 
     // countQuery 생성

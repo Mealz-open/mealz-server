@@ -50,7 +50,7 @@ public interface ItemControllerDocs {
           - `shopCategory` (ShopCategory, optional): 필터링할 가게 카테고리. 지정하지 않으면 전체 카테고리 대상.
           - `pageNumber` (int, optional, default = 1): 조회할 페이지 번호 (1부터 시작).
           - `pageSize` (int, optional, default = PageableConstants.DEFAULT_PAGE_SIZE): 한 페이지당 아이템 수. `MAX_PAGE_SIZE`(`PageableConstants.MAX_PAGE_SIZE`)를 초과할 수 없습니다.
-          - `sortField` (ItemSortField, optional, default = CREATED_DATE): 정렬 기준 필드 (`CREATED_DATE`).
+          - `sortField` (ItemSortField, optional, default = CREATED_DATE): 정렬 기준 필드 (`CREATED_DATE`, `PICKUP_TIME`).
           - `sortDirection` (Sort.Direction, optional, default = DESC): 정렬 방향 (`ASC`, `DESC`).
           
           ### 응답 데이터
@@ -97,6 +97,7 @@ public interface ItemControllerDocs {
           - `pageNumber`는 1 이상만 유효하며, 1보다 작은 값은 1로 처리됩니다.
           - `pageSize`가 `0`이거나 음수일 경우 기본값이 적용됩니다.
           - `sortField` 또는 `sortDirection` 미지정 시, 기본값(`CREATED_DATE` DESC)으로 정렬됩니다.
+          - `sortField = PICKUP_TIME`, `sortDirection = ASC` 요청 시, 픽업 시간이 임박한 순으로 정렬됩니다.
           - `pickupToday`는 `pickupStartTime`의 날짜가 서버 기준 오늘(`Asia/Seoul`)과 같으면 `true`입니다.
           """
   )
