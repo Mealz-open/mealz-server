@@ -63,6 +63,7 @@ public interface ItemControllerDocs {
                 "itemId": "UUID",
                 "itemName": "String",
                 "itemImageUrls": ["String", ...],
+                "shopId": "UUID",
                 "shopCategory": "ShopCategory",
                 "shopName": "String",
                 "latitude": double,
@@ -116,6 +117,7 @@ public interface ItemControllerDocs {
           {
             "itemName": "String",
             "itemImageUrls": ["String", ...],
+            "shopId": "UUID",
             "shopCategory": "ShopCategory",
             "shopName": "String",
             "latitude": 37.123456,
