@@ -6,6 +6,7 @@ import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import com.mealz.server.global.util.PageableConstants;
 import com.mealz.server.global.util.PageableUtil;
 import java.time.LocalDate;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.Sort.Direction;
 @AllArgsConstructor
 @Builder
 public class ItemFilteredRequest {
+
+  private UUID shopId;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDate date;
