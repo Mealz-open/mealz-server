@@ -19,6 +19,7 @@ public record ItemResponse(
     UUID itemId,
     String itemName,
     List<String> itemImageUrls,
+    UUID shopId,
     ShopCategory shopCategory,
     String shopName,
     double latitude,
@@ -50,6 +51,7 @@ public record ItemResponse(
         .itemId(item.getItemId())
         .itemName(item.getItemName())
         .itemImageUrls(imageUrls)
+        .shopId(item.getShop().getShopId())
         .shopCategory(item.getShop().getShopCategory())
         .shopName(item.getShop().getShopName())
         .latitude(item.getShop().getGeom().getPosition().getLat())

@@ -129,6 +129,7 @@ public interface SearchControllerDocs {
           - `itemId` (UUID)
           - `itemName` (String)
           - `itemImageUrls` (List<String>)
+          - `shopId` (UUID)
           - `shopCategory` (ShopCategory: KOREAN, CHINESE, JAPANESE, WESTERN, ASIAN, SNACK, FAST_FOOD, DESSERT, BEVERAGE, SIDE_DISH, ETC)
           - `shopName` (String)
           - `latitude` (double)   // 위도
