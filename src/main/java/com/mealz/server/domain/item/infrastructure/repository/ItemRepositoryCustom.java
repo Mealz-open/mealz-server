@@ -3,6 +3,7 @@ package com.mealz.server.domain.item.infrastructure.repository;
 import com.mealz.server.domain.item.infrastructure.entity.Item;
 import com.mealz.server.domain.shop.core.constant.ShopCategory;
 import java.time.LocalDate;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,6 +15,6 @@ public interface ItemRepositoryCustom {
    * @param date         특정 날짜
    * @param shopCategory 카테고리
    */
-  Page<Item> filteredItem(LocalDate date, ShopCategory shopCategory, Pageable pageable);
+  Page<Item> filteredItem(UUID shopId, LocalDate date, ShopCategory shopCategory, Pageable pageable);
 
 }

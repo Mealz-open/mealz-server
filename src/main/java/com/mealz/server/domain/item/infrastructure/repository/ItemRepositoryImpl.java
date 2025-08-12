@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +30,13 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public Page<Item> filteredItem(LocalDate date, ShopCategory shopCategory, Pageable pageable) {
+  public Page<Item> filteredItem(UUID shopId, LocalDate date, ShopCategory shopCategory, Pageable pageable) {
     // 날짜 범위 계산
     LocalDateTime startOfDay = date != null ? date.atStartOfDay() : null;
     LocalDateTime endOfDay = date != null ? date.plusDays(1).atStartOfDay().minusNanos(1) : null;
 
     BooleanExpression whereClause = QueryDslUtil.allOf(
+        QueryDslUtil.eqIfNotNull(SHOP.shopId, shopId),
         (startOfDay != null && endOfDay != null)
             ? ITEM.pickupStartTime.between(startOfDay, endOfDay)
             : null,
