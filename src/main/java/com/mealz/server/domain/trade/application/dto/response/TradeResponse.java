@@ -21,6 +21,12 @@ public record TradeResponse(
     UUID tradeId,
     TradeStatus tradeStatus,
     int tradeQuantity,
+    UUID donatorId,
+    String donatorNickname,
+    String donatorProfileUrl,
+    UUID beneficiaryId,
+    String beneficiaryNickname,
+    String beneficiaryProfileUrl,
     UUID itemId,
     String itemName,
     List<String> itemImageUrls,
@@ -55,6 +61,12 @@ public record TradeResponse(
         .tradeId(trade.getTradeId())
         .tradeStatus(trade.getTradeStatus())
         .tradeQuantity(trade.getQuantity())
+        .donatorId(trade.getItem().getShop().getMember().getMemberId())
+        .donatorNickname(trade.getItem().getShop().getMember().getNickname())
+        .donatorProfileUrl(trade.getItem().getShop().getMember().getProfileUrl())
+        .beneficiaryId(trade.getBeneficiary().getMemberId())
+        .beneficiaryNickname(trade.getBeneficiary().getNickname())
+        .beneficiaryProfileUrl(trade.getBeneficiary().getProfileUrl())
         .itemId(item.getItemId())
         .itemName(item.getItemName())
         .itemImageUrls(imageUrls)
