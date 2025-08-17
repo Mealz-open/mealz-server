@@ -45,8 +45,14 @@ public interface TradeControllerDocs {
           
           ### 응답 데이터 (`TradeResponse`)
           - `tradeId` (UUID): 거래 ID
-          - `tradeStatus` (TradeStatus): 거래 상태
+          - `tradeStatus` (TradeStatus): 거래 상태 (PENDING, SUCCEED)
           - `tradeQuantity` (int): 신청 수량
+          - `donatorId` (UUID): 기부자 회원 ID
+          - `donatorNickname` (String): 기부자 닉네임
+          - `donatorProfileUrl` (String): 기부자 프로필 이미지 URL
+          - `beneficiaryId` (UUID): 수혜자 회원 ID
+          - `beneficiaryNickname` (String): 수혜자 닉네임
+          - `beneficiaryProfileUrl` (String): 수혜자 프로필 이미지 URL
           - `itemId` (UUID): 물품 ID
           - `itemName` (String): 물품 이름
           - `itemImageUrls` (List<String>): 물품 이미지 URL 목록 (없으면 빈 배열)
@@ -59,9 +65,9 @@ public interface TradeControllerDocs {
           - `eupMyoenDong` (String): 주소(읍/면/동)
           - `ri` (String): 주소(리)
           - `remainQuantity` (int): 현재 남은 수량
-          - `expiredDate` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
-          - `pickupStartTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
-          - `pickupEndTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
+          - `expiredDate` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 물품 유효기간
+          - `pickupStartTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 수령 시작 시간
+          - `pickupEndTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 수령 종료 시간
           - `pickupToday` (boolean): 수령 시작일이 오늘(Asia/Seoul)인지 여부
           
           ### 사용 방법
@@ -100,11 +106,17 @@ public interface TradeControllerDocs {
           - `Page<TradeResponse>` 형태로 반환됩니다.
             - 각 요소의 스키마는 `TradeResponse`와 동일합니다(“거래 단건 조회”의 응답 데이터 참조).
             - 페이지 관련 메타데이터는 Spring Data `Page`의 기본 직렬화 결과를 따릅니다.
-            
+          
           ### 응답 데이터 (`TradeResponse`)
           - `tradeId` (UUID): 거래 ID
-          - `tradeStatus` (TradeStatus): 거래 상태
+          - `tradeStatus` (TradeStatus): 거래 상태 (PENDING, SUCCEED)
           - `tradeQuantity` (int): 신청 수량
+          - `donatorId` (UUID): 기부자 회원 ID
+          - `donatorNickname` (String): 기부자 닉네임
+          - `donatorProfileUrl` (String): 기부자 프로필 이미지 URL
+          - `beneficiaryId` (UUID): 수혜자 회원 ID
+          - `beneficiaryNickname` (String): 수혜자 닉네임
+          - `beneficiaryProfileUrl` (String): 수혜자 프로필 이미지 URL
           - `itemId` (UUID): 물품 ID
           - `itemName` (String): 물품 이름
           - `itemImageUrls` (List<String>): 물품 이미지 URL 목록 (없으면 빈 배열)
@@ -117,9 +129,9 @@ public interface TradeControllerDocs {
           - `eupMyoenDong` (String): 주소(읍/면/동)
           - `ri` (String): 주소(리)
           - `remainQuantity` (int): 현재 남은 수량
-          - `expiredDate` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
-          - `pickupStartTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
-          - `pickupEndTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul)
+          - `expiredDate` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 물품 유효기간
+          - `pickupStartTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 수령 시작 시간
+          - `pickupEndTime` (String, `yyyy-MM-dd'T'HH:mm:ss`, Asia/Seoul): 수령 종료 시간
           - `pickupToday` (boolean): 수령 시작일이 오늘(Asia/Seoul)인지 여부
           
           ### 사용 방법
@@ -133,20 +145,20 @@ public interface TradeControllerDocs {
   @Operation(
       summary = "거래 상태를 SUCCEED(완료)로 변경",
       description = """
-        ### 요청 파라미터
-        - `tradeId` (UUID, required): 상태를 변경할 거래의 식별자
-        
-        ### 응답 데이터
-        - 200OK
-        
-        ### 사용 방법
-        1. 클라이언트는 완료 처리할 거래의 `tradeId`(UUID)만 전달합니다.
-        2. 거래가 존재하고 현재 상태가 `PENDING`이면 거래의 `tradeStatus`를 `SUCCEED`로 갱신합니다.
-        
-        ### 유의 사항
-        - 변경 가능한 거래 상태는 **오직 `PENDING`** 입니다. `PENDING`이 아닌 상태의 거래는 완료 처리할 수 없습니다. (`validateTradeStatus(trade, TradeStatus.PENDING)`)
-        - 성공 시 해당 거래의 상태는 `SUCCEED`로 저장됩니다. (`trade.setTradeStatus(TradeStatus.SUCCEED)` → `tradeRepository.save(trade)`)
-        """
+          ### 요청 파라미터
+          - `tradeId` (UUID, required): 상태를 변경할 거래의 식별자
+          
+          ### 응답 데이터
+          - 200OK
+          
+          ### 사용 방법
+          1. 클라이언트는 완료 처리할 거래의 `tradeId`(UUID)만 전달합니다.
+          2. 거래가 존재하고 현재 상태가 `PENDING`이면 거래의 `tradeStatus`를 `SUCCEED`로 갱신합니다.
+          
+          ### 유의 사항
+          - 변경 가능한 거래 상태는 **오직 `PENDING`** 입니다. `PENDING`이 아닌 상태의 거래는 완료 처리할 수 없습니다. (`validateTradeStatus(trade, TradeStatus.PENDING)`)
+          - 성공 시 해당 거래의 상태는 `SUCCEED`로 저장됩니다. (`trade.setTradeStatus(TradeStatus.SUCCEED)` → `tradeRepository.save(trade)`)
+          """
   )
   ResponseEntity<Void> tradeSucceed(
       CustomOAuth2User customOAuth2User,
