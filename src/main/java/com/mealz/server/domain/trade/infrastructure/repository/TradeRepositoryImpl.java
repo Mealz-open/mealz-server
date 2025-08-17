@@ -2,6 +2,7 @@ package com.mealz.server.domain.trade.infrastructure.repository;
 
 import com.mealz.server.domain.item.infrastructure.entity.QItem;
 import com.mealz.server.domain.member.infrastructure.entity.QMember;
+import com.mealz.server.domain.shop.infrastructure.entity.QShop;
 import com.mealz.server.domain.trade.core.constant.TradeStatus;
 import com.mealz.server.domain.trade.infrastructure.entity.QTrade;
 import com.mealz.server.domain.trade.infrastructure.entity.Trade;
@@ -23,7 +24,9 @@ public class TradeRepositoryImpl implements TradeRepositoryCustom{
 
   private static final QTrade TRADE = QTrade.trade;
   private static final QItem ITEM = QItem.item;
-  private static final QMember MEMBER = QMember.member;
+  private static final QShop SHOP = QShop.shop;
+  private static final QMember DONATOR = new QMember("donator");
+  private static final QMember BENEFICIARY = new QMember("beneficiary");
 
   private final JPAQueryFactory queryFactory;
 
@@ -34,9 +37,9 @@ public class TradeRepositoryImpl implements TradeRepositoryCustom{
     LocalDateTime endOfDay = date != null ? date.plusDays(1).atStartOfDay().minusNanos(1) : null;
 
     BooleanExpression whereClause = QueryDslUtil.allOf(
-        QueryDslUtil.eqIfNotNull(TRADE.item.shop.member.memberId, donatorId),
-        QueryDslUtil.eqIfNotNull(TRADE.beneficiary.memberId, beneficiaryId),
-        QueryDslUtil.eqIfNotNull(TRADE.item.shop.shopId, shopId),
+        QueryDslUtil.eqIfNotNull(DONATOR.memberId, donatorId),
+        QueryDslUtil.eqIfNotNull(BENEFICIARY.memberId, beneficiaryId),
+        QueryDslUtil.eqIfNotNull(SHOP.shopId, shopId),
         QueryDslUtil.eqIfNotNull(ITEM.itemId, itemId),
         (startOfDay != null && endOfDay != null)
             ? TRADE.item.pickupStartTime.between(startOfDay, endOfDay)
@@ -48,7 +51,9 @@ public class TradeRepositoryImpl implements TradeRepositoryCustom{
     JPAQuery<Trade> contentQuery = queryFactory
         .selectFrom(TRADE)
         .join(TRADE.item, ITEM).fetchJoin()
-        .join(TRADE.beneficiary, MEMBER).fetchJoin()
+        .join(ITEM.shop, SHOP).fetchJoin()
+        .join(SHOP.member, DONATOR).fetchJoin()
+        .join(TRADE.beneficiary, BENEFICIARY).fetchJoin()
         .where(whereClause);
 
     // applySorting 동적 정렬
@@ -63,6 +68,10 @@ public class TradeRepositoryImpl implements TradeRepositoryCustom{
     JPAQuery<Long> countQuery = queryFactory
         .select(TRADE.count())
         .from(TRADE)
+        .join(TRADE.item, ITEM)
+        .join(ITEM.shop, SHOP)
+        .join(SHOP.member, DONATOR)
+        .join(TRADE.beneficiary, BENEFICIARY)
         .where(whereClause);
 
     return QueryDslUtil.fetchPage(contentQuery, countQuery, pageable);
