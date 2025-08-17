@@ -57,4 +57,14 @@ public class TradeController implements TradeControllerDocs{
       @ParameterObject TradeFilteredRequest request) {
     return ResponseEntity.ok(tradeService.filteredTrade(request));
   }
+
+  @Override
+  @PostMapping("/succeed")
+  @LogMonitoringInvocation
+  public ResponseEntity<Void> tradeSucceed(
+      @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+      @RequestBody UUID tradeId) {
+    tradeService.tradeSucceed(customOAuth2User.getMember(), tradeId);
+    return ResponseEntity.ok().build();
+  }
 }

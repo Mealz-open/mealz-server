@@ -66,6 +66,8 @@ public enum ErrorCode {
 
   TRADE_NOT_FOUND(HttpStatus.BAD_REQUEST, "거래를 찾을 수 없습니다."),
 
+  INVALID_TRADE_STATUS(HttpStatus.BAD_REQUEST, "잘못된 거래 상태입니다."),
+
   // MOCK DATA TODO: 출시 후 삭제
 
   GENERATE_MOCK_DATA_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Mock 데이터 생성 중 오류 발생"),

@@ -91,11 +91,26 @@ public class TradeService {
     });
   }
 
+  @Transactional
+  public void tradeSucceed(Member member, UUID tradeId) {
+    Trade trade = findTradeById(tradeId);
+    validateTradeStatus(trade, TradeStatus.PENDING);
+    trade.setTradeStatus(TradeStatus.SUCCEED);
+    tradeRepository.save(trade);
+  }
+
   public Trade findTradeById(UUID tradeId) {
     return tradeRepository.findById(tradeId)
         .orElseThrow(() -> {
           log.error("요청 PK에 해당하는 거래를 찾을 수 없습니다. 요청 PK: {}", tradeId);
           return new CustomException(ErrorCode.TRADE_NOT_FOUND);
         });
+  }
+
+  private void validateTradeStatus(Trade trade, TradeStatus tradeStatus) {
+    if (!trade.getTradeStatus().equals(tradeStatus)) {
+      log.error("거래 상태 오류: 현재 거래 상태: {}, 검증할 거래 상태: {}", trade.getTradeStatus(), tradeStatus);
+      throw new CustomException(ErrorCode.INVALID_TRADE_STATUS);
+    }
   }
 }
