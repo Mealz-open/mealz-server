@@ -15,6 +15,6 @@ public interface ItemRepositoryCustom {
    * @param date         특정 날짜
    * @param shopCategory 카테고리
    */
-  Page<Item> filteredItem(UUID shopId, LocalDate date, ShopCategory shopCategory, Pageable pageable);
+  Page<Item> filteredItem(UUID memberId, UUID shopId, LocalDate date, ShopCategory shopCategory, Pageable pageable);
 
 }

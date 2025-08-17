@@ -46,6 +46,7 @@ public interface ItemControllerDocs {
       summary = "아이템 필터링 조회",
       description = """
           ### 요청 파라미터
+          - `memberId` (UUID, optional): 특정 사용자가 업로드한 물품 조회. 지정하지 않으면 전체 회원 대상.
           - `shopId` (UUID, optional): 특정 매장에 업로드된 물품 조회. 지정하지 않으면 전체 매장 대상.
           - `date` (String, optional): 조회할 픽업 날짜. 형식 `yyyy-MM-dd`. 지정하지 않으면 전체 날짜 대상.
           - `shopCategory` (ShopCategory, optional): 필터링할 가게 카테고리. 지정하지 않으면 전체 카테고리 대상.

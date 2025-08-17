@@ -21,6 +21,8 @@ import org.springframework.data.domain.Sort.Direction;
 @Builder
 public class ItemFilteredRequest {
 
+  private UUID memberId;
+
   private UUID shopId;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
