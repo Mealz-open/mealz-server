@@ -44,7 +44,7 @@ public class ItemController implements ItemControllerDocs {
   }
 
   @Override
-  @GetMapping(value = "")
+  @GetMapping(value = "/filter")
   @LogMonitoringInvocation
   public ResponseEntity<Page<ItemResponse>> filteredItem(
       @Valid @ParameterObject ItemFilteredRequest request) {

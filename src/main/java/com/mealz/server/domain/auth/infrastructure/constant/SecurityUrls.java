@@ -18,7 +18,7 @@ public class SecurityUrls {
       "/api/auth/reissue", // accessToken 재발급
       "/login/oauth2/code/**", // 소셜 로그인
       "/login/**",
-      "/api/item", // 오늘의 나눔 (물품 필터링)
+      "/api/item/filter", // 오늘의 나눔 (물품 필터링)
 
       // Swagger
       "/docs/swagger-ui/**", // Swagger UI
