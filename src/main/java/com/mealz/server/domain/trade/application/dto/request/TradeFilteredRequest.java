@@ -21,6 +21,10 @@ import org.springframework.data.domain.Sort.Direction;
 @AllArgsConstructor
 public class TradeFilteredRequest {
 
+  UUID donatorId;
+
+  UUID beneficiaryId;
+
   UUID shopId;
 
   UUID itemId;

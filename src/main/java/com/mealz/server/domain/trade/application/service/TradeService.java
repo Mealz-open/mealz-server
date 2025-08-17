@@ -76,6 +76,8 @@ public class TradeService {
   @Transactional(readOnly = true)
   public Page<TradeResponse> filteredTrade(TradeFilteredRequest request) {
     Page<Trade> tradePage = tradeRepositoryCustom.filteredTrade(
+        request.getDonatorId(),
+        request.getBeneficiaryId(),
         request.getShopId(),
         request.getItemId(),
         request.getDate(),

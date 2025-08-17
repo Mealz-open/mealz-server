@@ -28,12 +28,14 @@ public class TradeRepositoryImpl implements TradeRepositoryCustom{
   private final JPAQueryFactory queryFactory;
 
   @Override
-  public Page<Trade> filteredTrade(UUID shopId, UUID itemId, LocalDate date, TradeStatus tradeStatus, Pageable pageable) {
+  public Page<Trade> filteredTrade(UUID donatorId, UUID beneficiaryId, UUID shopId, UUID itemId, LocalDate date, TradeStatus tradeStatus, Pageable pageable) {
     // 날짜 범위 계산
     LocalDateTime startOfDay = date != null ? date.atStartOfDay() : null;
     LocalDateTime endOfDay = date != null ? date.plusDays(1).atStartOfDay().minusNanos(1) : null;
 
     BooleanExpression whereClause = QueryDslUtil.allOf(
+        QueryDslUtil.eqIfNotNull(TRADE.item.shop.member.memberId, donatorId),
+        QueryDslUtil.eqIfNotNull(TRADE.beneficiary.memberId, beneficiaryId),
         QueryDslUtil.eqIfNotNull(TRADE.item.shop.shopId, shopId),
         QueryDslUtil.eqIfNotNull(ITEM.itemId, itemId),
         (startOfDay != null && endOfDay != null)
