@@ -129,4 +129,27 @@ public interface TradeControllerDocs {
   ResponseEntity<Page<TradeResponse>> filteredTrade(
       TradeFilteredRequest request
   );
+
+  @Operation(
+      summary = "거래 상태를 SUCCEED(완료)로 변경",
+      description = """
+        ### 요청 파라미터
+        - `tradeId` (UUID, required): 상태를 변경할 거래의 식별자
+        
+        ### 응답 데이터
+        - 200OK
+        
+        ### 사용 방법
+        1. 클라이언트는 완료 처리할 거래의 `tradeId`(UUID)만 전달합니다.
+        2. 거래가 존재하고 현재 상태가 `PENDING`이면 거래의 `tradeStatus`를 `SUCCEED`로 갱신합니다.
+        
+        ### 유의 사항
+        - 변경 가능한 거래 상태는 **오직 `PENDING`** 입니다. `PENDING`이 아닌 상태의 거래는 완료 처리할 수 없습니다. (`validateTradeStatus(trade, TradeStatus.PENDING)`)
+        - 성공 시 해당 거래의 상태는 `SUCCEED`로 저장됩니다. (`trade.setTradeStatus(TradeStatus.SUCCEED)` → `tradeRepository.save(trade)`)
+        """
+  )
+  ResponseEntity<Void> tradeSucceed(
+      CustomOAuth2User customOAuth2User,
+      UUID tradeId
+  );
 }
