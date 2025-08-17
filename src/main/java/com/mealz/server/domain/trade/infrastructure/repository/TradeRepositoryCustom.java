@@ -12,5 +12,5 @@ public interface TradeRepositoryCustom {
   /**
    * 거래 필터링 조회
    */
-  Page<Trade> filteredTrade(UUID shopId, UUID itemId, LocalDate date, TradeStatus tradeStatus, Pageable pageable);
+  Page<Trade> filteredTrade(UUID donatorId, UUID beneficiaryId, UUID shopId, UUID itemId, LocalDate date, TradeStatus tradeStatus, Pageable pageable);
 }

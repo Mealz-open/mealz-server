@@ -79,6 +79,8 @@ public interface TradeControllerDocs {
       summary = "거래 목록 조회",
       description = """
           ### 요청 파라미터
+          - `donatorId` (UUID, optional): 특정 기부자에게 요청된 거래만 조회
+          - `beneficiaryId` (UUID, optional): 특정 수혜자에게 요청된 거래만 조회
           - `shopId` (UUID, optional): 해당 매장의 거래만 조회
           - `itemId` (UUID, optional): 해당 물품의 거래만 조회
           - `date` (LocalDate, optional, 형식 `yyyy-MM-dd`): 지정 시 **물품의 `pickupStartTime`**이 해당 날짜에 포함되는 거래만 조회
