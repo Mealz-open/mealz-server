@@ -196,7 +196,8 @@ public interface ShopControllerDocs {
       summary = "기부 카운트 기준 가게 목록 조회 (최대 30개)",
       description = """
           ### 요청 파라미터
-          - (없음)
+          - int donateCount: 기부 횟수 N개 이상
+            ex. donateCount = 10 요청 시 기부횟수가 10회 이상인 매장 리스트를 반환합니다
           
           ### 응답 데이터
           - `List<ShopResponse>`: 최대 30개의 가게 정보
@@ -251,5 +252,5 @@ public interface ShopControllerDocs {
           - 시간 필드 포맷은 `HH:mm`(Asia/Seoul)입니다.
           """
   )
-  ResponseEntity<List<ShopResponse>> getDonateShops();
+  ResponseEntity<List<ShopResponse>> getDonateShops(int donateCount);
 }

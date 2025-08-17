@@ -10,5 +10,5 @@ public interface ShopRepository extends JpaRepository<Shop, UUID> {
 
   List<Shop> findByMember(Member member);
 
-  List<Shop> findTop30ByOrderByDonateCountDesc();
+  List<Shop> findAllByDonateCountAfterOrderByDonateCountDesc(int donateCount);
 }

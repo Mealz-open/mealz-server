@@ -75,7 +75,7 @@ public class ShopController implements ShopControllerDocs {
   @Override
   @GetMapping("/donate")
   @LogMonitoringInvocation
-  public ResponseEntity<List<ShopResponse>> getDonateShops() {
-    return ResponseEntity.ok(shopService.getDonateShops());
+  public ResponseEntity<List<ShopResponse>> getDonateShops(int donateCount) {
+    return ResponseEntity.ok(shopService.getDonateShops(donateCount));
   }
 }

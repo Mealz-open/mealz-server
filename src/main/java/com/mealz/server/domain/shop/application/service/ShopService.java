@@ -86,8 +86,8 @@ public class ShopService {
   }
 
   @Transactional(readOnly = true)
-  public List<ShopResponse> getDonateShops() {
-    return shopRepository.findTop30ByOrderByDonateCountDesc()
+  public List<ShopResponse> getDonateShops(int donateCount) {
+    return shopRepository.findAllByDonateCountAfterOrderByDonateCountDesc(donateCount - 1)
         .stream()
         .map(ShopResponse::from)
         .collect(Collectors.toList());
