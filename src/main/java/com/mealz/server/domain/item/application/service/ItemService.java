@@ -60,6 +60,7 @@ public class ItemService {
   @Transactional(readOnly = true)
   public Page<ItemResponse> filteredItem(ItemFilteredRequest request) {
     Page<Item> itemPage = itemRepositoryCustom.filteredItem(
+        request.getMemberId(),
         request.getShopId(),
         request.getDate(),
         request.getShopCategory(),
