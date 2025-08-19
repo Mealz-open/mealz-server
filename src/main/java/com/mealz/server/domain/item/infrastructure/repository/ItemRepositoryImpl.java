@@ -12,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
     // 날짜 범위 계산
     LocalDateTime startOfDay = date != null ? date.atStartOfDay() : null;
     LocalDateTime endOfDay = date != null ? date.plusDays(1).atStartOfDay().minusNanos(1) : null;
+    LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
     BooleanExpression whereClause = QueryDslUtil.allOf(
         QueryDslUtil.eqIfNotNull(ITEM.shop.member.memberId, memberId),
@@ -41,7 +43,8 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         (startOfDay != null && endOfDay != null)
             ? ITEM.pickupStartTime.between(startOfDay, endOfDay)
             : null,
-        QueryDslUtil.eqIfNotNull(ITEM.shop.shopCategory, shopCategory)
+        QueryDslUtil.eqIfNotNull(ITEM.shop.shopCategory, shopCategory),
+        ITEM.pickupEndTime.after(now)
     );
 
     Map<String, ComparableExpression<?>> customSortMap = Collections.singletonMap(
