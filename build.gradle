@@ -22,22 +22,14 @@ configurations {
 repositories {
     mavenCentral()
 
-//    maven {
-//        name = 'chuseok22NexusSnapshots'
-//        url = uri('https://nexus.chuseok22.com/repository/maven-snapshots/')
-//        metadataSources {
-//            mavenPom()
-//            artifact()
-//        }
-//    }
-//    maven {
-//        name = 'chuseok22NexusReleases'
-//        url = uri('https://nexus.chuseok22.com/repository/maven-releases/')
-//        metadataSources {
-//            mavenPom()
-//            artifact()
-//        }
-//    }
+    maven {
+        name = 'chuseok22NexusReleases'
+        url = uri('https://nexus.chuseok22.com/repository/maven-releases/')
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
     maven {
         url "http://suh-project.synology.me:9999/repository/maven-releases/"
         allowInsecureProtocol = true
@@ -119,6 +111,9 @@ dependencies {
 
     // Suh Random Engine
     implementation 'me.suhsaechan:suh-random-engine:1.1.0'
+
+    // Chusoek22 Api Change Log
+    implementation 'com.chuseok22:ApiChangeLog:1.0.1'
 }
 
 tasks.named('test') {

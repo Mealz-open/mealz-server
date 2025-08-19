@@ -38,3 +38,8 @@ springdoc:
     path: /docs/swagger
 server:
   forward-headers-strategy: framework
+
+chuseok22:
+  api-change-log:
+    date-format: yyyy-MM-dd
+    enabled: true

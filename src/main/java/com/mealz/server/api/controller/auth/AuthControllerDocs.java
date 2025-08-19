@@ -1,5 +1,7 @@
 package com.mealz.server.api.controller.auth;
 
+import com.chuseok22.apichangelog.annotation.ApiChangeLog;
+import com.chuseok22.apichangelog.annotation.ApiChangeLogs;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +9,14 @@ import org.springframework.http.ResponseEntity;
 
 public interface AuthControllerDocs {
 
+  @ApiChangeLogs({
+      @ApiChangeLog(
+          date = "2025-08-01",
+          author = "Chusoek22",
+          issueUrl = "https://github/issue/example",
+          description = "엑세스 토큰 재발급 reissue"
+      )
+  })
   @Operation(
       summary = "accessToken 재발급 요청",
       description = """
